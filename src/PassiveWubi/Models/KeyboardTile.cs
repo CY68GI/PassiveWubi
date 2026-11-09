@@ -6,8 +6,9 @@ namespace PassiveWubi.Models;
 public sealed class WubiKeyDefinition
 {
     public required string Key { get; init; }
+    public required string KeyName { get; init; }
     public string SimpleCode { get; init; } = string.Empty;
-    public string RootMnemonic { get; init; } = string.Empty;
+    public IReadOnlyList<string> Roots { get; init; } = [];
     public required string AccentColor { get; init; }
     public string Zone { get; init; } = string.Empty;
 }
@@ -21,8 +22,9 @@ public sealed class KeyboardTile : INotifyPropertyChanged
     public KeyboardTile(WubiKeyDefinition definition)
     {
         Key = definition.Key;
+        KeyName = definition.KeyName;
         SimpleCode = definition.SimpleCode;
-        RootMnemonic = definition.RootMnemonic;
+        Roots = definition.Roots;
         AccentColor = definition.AccentColor;
         AccentBrush = new SolidColorBrush(
             (Color)ColorConverter.ConvertFromString(definition.AccentColor));
@@ -31,14 +33,16 @@ public sealed class KeyboardTile : INotifyPropertyChanged
     }
 
     public string Key { get; }
+    public string KeyName { get; }
     public string SimpleCode { get; }
-    public string RootMnemonic { get; }
+    public IReadOnlyList<string> Roots { get; }
+    public string RootTableText => string.Join(" ", Roots);
     public string AccentColor { get; }
     public System.Windows.Media.Brush AccentBrush { get; }
     public string Zone { get; }
 
     public string AccessibleText =>
-        $"{Key} 键，{(string.IsNullOrWhiteSpace(SimpleCode) ? "无一级简码" : $"一级简码 {SimpleCode}")}，{RootMnemonic.Replace("\n", "，")}";
+        $"{Key} 键，键名 {KeyName}，{(string.IsNullOrWhiteSpace(SimpleCode) ? "无一级简码" : $"一级简码 {SimpleCode}")}，字根 {string.Join("、", Roots)}";
 
     public bool IsHighlighted
     {

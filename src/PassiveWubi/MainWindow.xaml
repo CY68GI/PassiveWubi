@@ -231,7 +231,7 @@
                                    Margin="0,5,0,0"
                                    LineHeight="17" />
                         <TextBlock x:Name="SidebarVersionText"
-                                   Text="v1.0.1"
+                                   Text="v1.0.2"
                                    Foreground="{DynamicResource FaintBrush}"
                                    FontSize="11"
                                    Margin="0,12,0,0" />
@@ -508,7 +508,7 @@
                                                   Click="OptionToggle_Click" />
                                         <CheckBox x:Name="ShowRootHintsToggle"
                                                   Grid.Column="1"
-                                                  Content="显示字根口诀"
+                                                  Content="显示字根表"
                                                   Style="{StaticResource ToggleSwitch}"
                                                   Click="OptionToggle_Click" />
                                     </Grid>
@@ -590,7 +590,7 @@
                                             Padding="12,7"
                                             VerticalAlignment="Center">
                                         <TextBlock x:Name="AboutVersionText"
-                                                   Text="v1.0.1"
+                                                   Text="v1.0.2"
                                                    Foreground="{DynamicResource AccentTextBrush}"
                                                    FontSize="12"
                                                    FontWeight="SemiBold" />
@@ -742,7 +742,7 @@
                                                    FontSize="16"
                                                    FontWeight="SemiBold" />
                                         <TextBlock x:Name="UpdateStatusText"
-                                                   Text="当前版本 v1.0.0"
+                                                   Text="当前版本 v1.0.2"
                                                    Foreground="{DynamicResource MutedBrush}"
                                                    FontSize="12"
                                                    Margin="0,6,0,0" />
@@ -775,6 +775,42 @@
                                                 CornerRadius="12"
                                                 Padding="9,5"
                                                 VerticalAlignment="Center">
+                                            <TextBlock Text="v1.0.2"
+                                                       Foreground="{DynamicResource OnAccentBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold" />
+                                        </Border>
+                                        <TextBlock Foreground="{DynamicResource InkBrush}" Text="改为真实字根表"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="12,0,0,0"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="2026-11-09"
+                                                   Foreground="{DynamicResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="14,1,0,0"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <Border Height="1"
+                                            Background="{DynamicResource LineBrush}"
+                                            Margin="0,18,0,16" />
+                                    <TextBlock Foreground="{DynamicResource MutedBrush}"
+                                               FontSize="12.5"
+                                               LineHeight="23">
+                                        <Run Text="•  置顶键盘不再显示助记歌，改为按版本展示实际字根字符" /><LineBreak />
+                                        <Run Text="•  每个键位显示键名、一级简码和该键完整字根集合" /><LineBreak />
+                                        <Run Text="•  重新调整字根文字大小与键位高度，提高密集字根的辨识度" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{DynamicResource AccentBrush}"
+                                                CornerRadius="12"
+                                                Padding="9,5"
+                                                VerticalAlignment="Center">
                                             <TextBlock Text="v1.0.1"
                                                        Foreground="{DynamicResource OnAccentBrush}"
                                                        FontSize="11"
@@ -799,7 +835,7 @@
                                                LineHeight="23">
                                         <Run Text="•  主界面取消始终置顶，避免遮挡其他窗口" /><LineBreak />
                                         <Run Text="•  全界面统一暗色与浅色设计，并支持即时主题切换" /><LineBreak />
-                                        <Run Text="•  置顶键盘的一级简码大字缩小，字根说明小字放大" /><LineBreak />
+                                        <Run Text="•  置顶键盘的一级简码大字缩小，字根小字放大" /><LineBreak />
                                         <Run Text="•  打开主界面时暂时降低键盘层级，关闭后恢复键盘置顶" />
                                     </TextBlock>
                                 </StackPanel>
@@ -840,7 +876,7 @@
                                                LineHeight="23">
                                         <Run Text="•  支持五笔 86 版、98 版和新世纪版键位切换" /><LineBreak />
                                         <Run Text="•  屏幕置顶的 26 键学习键盘，可调透明度与整体大小" /><LineBreak />
-                                        <Run Text="•  一级简码与字根口诀同时呈现，每 5 秒轻提示一个键位" /><LineBreak />
+                                        <Run Text="•  一级简码与字根表同时呈现，每 5 秒轻提示一个键位" /><LineBreak />
                                         <Run Text="•  主界面关闭后常驻系统托盘，支持开机启动" /><LineBreak />
                                         <Run Text="•  软件目录内按日记录运行日志，并可从关于页一键打开" /><LineBreak />
                                         <Run Text="•  启动自动检查更新，也可从主界面或托盘手动检查" /><LineBreak />

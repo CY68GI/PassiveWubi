@@ -160,7 +160,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="108"
-                                        Height="118"
+                                        Height="124"
                                         Margin="4"
                                         CornerRadius="10"
                                         BorderThickness="1"
@@ -213,21 +213,38 @@
                                                            VerticalAlignment="Center" />
                                             </Grid>
                                             <Grid Grid.Row="1">
-                                                <TextBlock Text="{Binding SimpleCode}"
-                                                           Foreground="White"
-                                                           FontSize="25"
-                                                           FontWeight="SemiBold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Top"
-                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
-                                                <TextBlock Text="{Binding RootMnemonic}"
-                                                           Foreground="#ADB9CA"
-                                                           FontSize="11"
-                                                           LineHeight="14"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="28" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding KeyName}"
+                                                               Foreground="White"
+                                                               FontSize="21"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top" />
+                                                    <Border HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Background="#18FFFFFF"
+                                                            CornerRadius="5"
+                                                            Padding="5,2"
+                                                            Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}">
+                                                        <TextBlock Text="{Binding SimpleCode}"
+                                                                   Foreground="{Binding AccentBrush}"
+                                                                   FontSize="10.5"
+                                                                   FontWeight="SemiBold" />
+                                                    </Border>
+                                                </Grid>
+                                                <TextBlock Grid.Row="1"
+                                                           Text="{Binding RootTableText}"
+                                                           Foreground="#C2CCDA"
+                                                           FontSize="11.2"
+                                                           LineHeight="13.8"
                                                            TextAlignment="Center"
                                                            TextWrapping="Wrap"
                                                            HorizontalAlignment="Stretch"
-                                                           VerticalAlignment="Bottom"
+                                                           VerticalAlignment="Center"
                                                            Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
                                             </Grid>
                                         </Grid>
@@ -249,7 +266,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="108"
-                                        Height="118"
+                                        Height="124"
                                         Margin="4"
                                         CornerRadius="10"
                                         BorderThickness="1"
@@ -301,20 +318,38 @@
                                                            VerticalAlignment="Center" />
                                             </Grid>
                                             <Grid Grid.Row="1">
-                                                <TextBlock Text="{Binding SimpleCode}"
-                                                           Foreground="White"
-                                                           FontSize="25"
-                                                           FontWeight="SemiBold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Top"
-                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
-                                                <TextBlock Text="{Binding RootMnemonic}"
-                                                           Foreground="#ADB9CA"
-                                                           FontSize="11"
-                                                           LineHeight="14"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="28" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding KeyName}"
+                                                               Foreground="White"
+                                                               FontSize="21"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top" />
+                                                    <Border HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Background="#18FFFFFF"
+                                                            CornerRadius="5"
+                                                            Padding="5,2"
+                                                            Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}">
+                                                        <TextBlock Text="{Binding SimpleCode}"
+                                                                   Foreground="{Binding AccentBrush}"
+                                                                   FontSize="10.5"
+                                                                   FontWeight="SemiBold" />
+                                                    </Border>
+                                                </Grid>
+                                                <TextBlock Grid.Row="1"
+                                                           Text="{Binding RootTableText}"
+                                                           Foreground="#C2CCDA"
+                                                           FontSize="11.2"
+                                                           LineHeight="13.8"
                                                            TextAlignment="Center"
                                                            TextWrapping="Wrap"
-                                                           VerticalAlignment="Bottom"
+                                                           HorizontalAlignment="Stretch"
+                                                           VerticalAlignment="Center"
                                                            Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
                                             </Grid>
                                         </Grid>
@@ -336,7 +371,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Width="108"
-                                        Height="118"
+                                        Height="124"
                                         Margin="4"
                                         CornerRadius="10"
                                         BorderThickness="1"
@@ -388,20 +423,38 @@
                                                            VerticalAlignment="Center" />
                                             </Grid>
                                             <Grid Grid.Row="1">
-                                                <TextBlock Text="{Binding SimpleCode}"
-                                                           Foreground="White"
-                                                           FontSize="25"
-                                                           FontWeight="SemiBold"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Top"
-                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
-                                                <TextBlock Text="{Binding RootMnemonic}"
-                                                           Foreground="#ADB9CA"
-                                                           FontSize="11"
-                                                           LineHeight="14"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="28" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding KeyName}"
+                                                               Foreground="White"
+                                                               FontSize="21"
+                                                               FontWeight="SemiBold"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top" />
+                                                    <Border HorizontalAlignment="Right"
+                                                            VerticalAlignment="Top"
+                                                            Background="#18FFFFFF"
+                                                            CornerRadius="5"
+                                                            Padding="5,2"
+                                                            Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}">
+                                                        <TextBlock Text="{Binding SimpleCode}"
+                                                                   Foreground="{Binding AccentBrush}"
+                                                                   FontSize="10.5"
+                                                                   FontWeight="SemiBold" />
+                                                    </Border>
+                                                </Grid>
+                                                <TextBlock Grid.Row="1"
+                                                           Text="{Binding RootTableText}"
+                                                           Foreground="#C2CCDA"
+                                                           FontSize="11.2"
+                                                           LineHeight="13.8"
                                                            TextAlignment="Center"
                                                            TextWrapping="Wrap"
-                                                           VerticalAlignment="Bottom"
+                                                           HorizontalAlignment="Stretch"
+                                                           VerticalAlignment="Center"
                                                            Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
                                             </Grid>
                                         </Grid>

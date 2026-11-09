@@ -7,7 +7,7 @@
 ## 功能
 
 - 支持五笔 86 版、98 版和新世纪版。
-- 置顶显示完整 26 键学习键盘，25 个五笔键展示一级简码和字根口诀，Z 键展示学习键提示。
+- 置顶显示完整 26 键学习键盘，25 个五笔键展示键名、一级简码和实际字根表，Z 键展示学习键提示。
 - 可拖动、可整体缩放，可调整 25%–100% 透明度。
 - 可选“潜移默化模式”，每 5 秒轻提示一个键位。
 - 主界面用于版本、外观、启动和更新设置。
@@ -38,6 +38,10 @@
 
 程序不上传键位记录或运行日志。更新检查只请求 GitHub 公开的 Release 信息；日志仅保存在本机程序目录。
 
+## 五笔字根数据
+
+置顶键盘显示实际字根字符，不显示助记歌。86 版逐键字根依据公开字根资料整理；98 版与新世纪版按各自字根键位表整理键名、一级简码和字根集合。若发现某个版本的字根归类与本机输入法不一致，请在 Issue 中注明版本、键位和字根字符。
+
 ## 源码与目录
 
 ```text
@@ -65,15 +69,15 @@ dotnet run --project .\src\PassiveWubi\PassiveWubi.csproj
 生成 Windows 64 位单文件便携包：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.0.1
+powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.0.2
 ```
 
 输出：
 
 ```text
-dist/PassiveWubi-v1.0.1-win-x64/
-dist/PassiveWubi-v1.0.1-win-x64.zip
-dist/PassiveWubi-v1.0.1-win-x64.zip.sha256
+dist/PassiveWubi-v1.0.2-win-x64/
+dist/PassiveWubi-v1.0.2-win-x64.zip
+dist/PassiveWubi-v1.0.2-win-x64.zip.sha256
 ```
 
 ## 发布
@@ -82,7 +86,7 @@ dist/PassiveWubi-v1.0.1-win-x64.zip.sha256
 
 ## 致谢
 
-五笔输入法由王永民先生发明。项目使用公开资料整理版本键位与字根口诀；如发现键位内容需要校正，欢迎提交 Issue 或 Pull Request。
+五笔输入法由王永民先生发明。项目使用公开字根表资料整理版本键位与字根字符；如发现键位内容需要校正，欢迎提交 Issue 或 Pull Request。
 
 ## 许可证
 
