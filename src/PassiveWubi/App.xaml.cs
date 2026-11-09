@@ -51,6 +51,7 @@ public partial class App : System.Windows.Application
         UpdateService = new UpdateService(Log);
         Settings = SettingsService.Load();
         Settings.LaunchAtStartup = StartupService.IsEnabled();
+        ThemeService.Apply(Settings.Theme, Log);
 
         DispatcherUnhandledException += OnDispatcherUnhandledException;
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -98,11 +99,22 @@ public partial class App : System.Windows.Application
         KeyboardWindowInstance?.ApplySettings();
     }
 
+    public void ApplyTheme()
+    {
+        ThemeService.Apply(Settings.Theme, Log);
+        SaveSettings();
+    }
+
     public void ShowMainWindow()
     {
         if (_exiting)
         {
             return;
+        }
+
+        if (KeyboardWindowInstance?.IsVisible == true)
+        {
+            KeyboardWindowInstance.Topmost = false;
         }
 
         MainWindowInstance ??= new MainWindow();
@@ -116,10 +128,11 @@ public partial class App : System.Windows.Application
             MainWindowInstance.WindowState = WindowState.Normal;
         }
 
-        MainWindowInstance.Activate();
+        MainWindowInstance.Topmost = false;
         MainWindowInstance.Topmost = true;
         MainWindowInstance.Activate();
         MainWindowInstance.Focus();
+        MainWindowInstance.Topmost = false;
         Log.Info("Main window shown.");
     }
 
@@ -132,6 +145,7 @@ public partial class App : System.Windows.Application
 
         KeyboardWindowInstance ??= new KeyboardWindow();
         KeyboardWindowInstance.ApplySettings();
+        KeyboardWindowInstance.Topmost = MainWindowInstance?.IsVisible != true;
         KeyboardWindowInstance.Show();
         KeyboardWindowInstance.Activate();
         RefreshKeyboardStatus();
@@ -372,6 +386,14 @@ public partial class App : System.Windows.Application
     {
         UpdateTrayMenuText();
         MainWindowInstance?.SetKeyboardStatus(KeyboardWindowInstance?.IsVisible == true);
+    }
+
+    public void RestoreKeyboardTopmost()
+    {
+        if (KeyboardWindowInstance?.IsVisible == true)
+        {
+            KeyboardWindowInstance.Topmost = true;
+        }
     }
 
     private void Dispatch(Action action)

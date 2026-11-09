@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="CanvasBrush" Color="#0B111B" />
+    <SolidColorBrush x:Key="SidebarBrush" Color="#101722" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#131B29" />
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#192334" />
+    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#223047" />
+    <SolidColorBrush x:Key="SurfaceSubtleBrush" Color="#0F1622" />
+    <SolidColorBrush x:Key="LineBrush" Color="#2A364A" />
+    <SolidColorBrush x:Key="InkBrush" Color="#E8EDF5" />
+    <SolidColorBrush x:Key="MutedBrush" Color="#91A0B5" />
+    <SolidColorBrush x:Key="FaintBrush" Color="#65758B" />
+    <SolidColorBrush x:Key="OnAccentBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#EF725E" />
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#D65B48" />
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#322127" />
+    <SolidColorBrush x:Key="AccentTextBrush" Color="#F2B6AA" />
+    <SolidColorBrush x:Key="NavTextBrush" Color="#A6B3C5" />
+    <SolidColorBrush x:Key="NavSelectedBrush" Color="#202C40" />
+    <SolidColorBrush x:Key="NavHoverBrush" Color="#182333" />
+    <SolidColorBrush x:Key="NavSelectedTextBrush" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="InputTrackBrush" Color="#303D50" />
+    <SolidColorBrush x:Key="InputThumbBrush" Color="#F4F6FA" />
+    <SolidColorBrush x:Key="SuccessBackgroundBrush" Color="#183127" />
+    <SolidColorBrush x:Key="SuccessTextBrush" Color="#77C9A4" />
+    <SolidColorBrush x:Key="SuccessDotBrush" Color="#63BF94" />
+    <SolidColorBrush x:Key="HeroTextBrush" Color="#F8FAFD" />
+    <SolidColorBrush x:Key="HeroMutedBrush" Color="#AEBBCC" />
+    <SolidColorBrush x:Key="HeroAccentTextBrush" Color="#F2B6AA" />
+    <SolidColorBrush x:Key="HeroCircleBrush" Color="#16FFFFFF" />
+    <SolidColorBrush x:Key="HeroCircleBorderBrush" Color="#24FFFFFF" />
+    <LinearGradientBrush x:Key="HeroBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#172235" Offset="0" />
+        <GradientStop Color="#273951" Offset="1" />
+    </LinearGradientBrush>
+</ResourceDictionary>

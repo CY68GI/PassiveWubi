@@ -47,7 +47,6 @@ public partial class KeyboardWindow : Window
     {
         var settings = Host.Settings;
         Opacity = settings.KeyboardOpacity;
-        Topmost = true;
 
         Width = BaseWidth * settings.KeyboardScale;
         Height = BaseHeight * settings.KeyboardScale;

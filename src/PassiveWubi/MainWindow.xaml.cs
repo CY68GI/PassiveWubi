@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using PassiveWubi.Data;
 using PassiveWubi.Models;
+using PassiveWubi.Services;
 
 namespace PassiveWubi;
 
@@ -11,15 +12,14 @@ public partial class MainWindow : Window
 {
     private bool _isRefreshing;
     private string _latestReleaseUrl = AppInfo.ReleasesUrl;
-    private readonly DispatcherTimer _saveDebounce;
+    private readonly DispatcherTimer _saveDebounce = new()
+    {
+        Interval = TimeSpan.FromMilliseconds(450)
+    };
 
     public MainWindow()
     {
         InitializeComponent();
-        _saveDebounce = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(450)
-        };
         _saveDebounce.Tick += (_, _) =>
         {
             _saveDebounce.Stop();
@@ -31,6 +31,10 @@ public partial class MainWindow : Window
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
+        ThemeService.ApplyWindowChrome(this);
+        Dispatcher.BeginInvoke(
+            DispatcherPriority.ApplicationIdle,
+            new Action(() => ThemeService.ApplyWindowChrome(this)));
         SidebarVersionText.Text = AppInfo.DisplayVersion;
         AboutVersionText.Text = AppInfo.DisplayVersion;
         LogPathText.Text = AppPaths.LogDirectory;
@@ -50,6 +54,7 @@ public partial class MainWindow : Window
         Host.SaveSettings();
         Hide();
         Topmost = false;
+        Host.RestoreKeyboardTopmost();
         Host.Log.Info("Main window hidden; application remains in the tray.");
     }
 
@@ -73,6 +78,9 @@ public partial class MainWindow : Window
             HeroVersionText.Text = WubiDefinitions.GetVersionName(settings.Version);
             OpacityValueText.Text = $"{settings.KeyboardOpacity:P0}";
             ScaleValueText.Text = $"{settings.KeyboardScale:P0}";
+            ThemeToggleButton.Content = settings.Theme == AppTheme.Dark
+                ? "切换为浅色"
+                : "切换为深色";
             OverlayStatusText.Text = Host.KeyboardWindowInstance?.IsVisible == true
                 ? "置顶键盘运行中"
                 : "置顶键盘已隐藏";
@@ -238,7 +246,46 @@ public partial class MainWindow : Window
         Host.SaveSettings();
         Hide();
         Topmost = false;
+        Host.RestoreKeyboardTopmost();
         Host.Log.Info("Main window hidden by header button.");
+    }
+
+    private void MinimizeWindow_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void MaximizeWindow_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
+    }
+
+    private void CloseWindow_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Window_StateChanged(object? sender, EventArgs e)
+    {
+        if (MaximizeButton is not null)
+        {
+            MaximizeButton.Content = WindowState == WindowState.Maximized ? "❐" : "□";
+            MaximizeButton.ToolTip = WindowState == WindowState.Maximized ? "还原" : "最大化";
+        }
+    }
+
+    private void ToggleTheme_Click(object sender, RoutedEventArgs e)
+    {
+        Host.Settings.Theme = Host.Settings.Theme == AppTheme.Dark
+            ? AppTheme.Light
+            : AppTheme.Dark;
+        Host.ApplyTheme();
+        RefreshFromSettings();
+        Dispatcher.BeginInvoke(
+            DispatcherPriority.ApplicationIdle,
+            new Action(() => ThemeService.ApplyWindowChrome(this)));
     }
 
     private void ResetAppearance_Click(object sender, RoutedEventArgs e)

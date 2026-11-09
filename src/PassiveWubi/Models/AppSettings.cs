@@ -17,12 +17,20 @@ public enum WubiVersion
     NewCentury
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter<AppTheme>))]
+public enum AppTheme
+{
+    Dark,
+    Light
+}
+
 public sealed class AppSettings : INotifyPropertyChanged
 {
     public const double DefaultOpacity = 0.90;
     public const double DefaultScale = 1.0;
 
     private WubiVersion _version = WubiVersion.V86;
+    private AppTheme _theme = AppTheme.Dark;
     private double _keyboardOpacity = DefaultOpacity;
     private double _keyboardScale = DefaultScale;
     private bool _showSimpleCodes = true;
@@ -41,6 +49,12 @@ public sealed class AppSettings : INotifyPropertyChanged
     {
         get => _version;
         set => Set(ref _version, value);
+    }
+
+    public AppTheme Theme
+    {
+        get => _theme;
+        set => Set(ref _theme, value);
     }
 
     public double KeyboardOpacity

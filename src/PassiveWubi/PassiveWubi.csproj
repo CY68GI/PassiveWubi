@@ -11,9 +11,9 @@
     <RootNamespace>PassiveWubi</RootNamespace>
     <ApplicationIcon>Assets\PassiveWubi.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
     <Authors>CY68GI</Authors>
     <Company>CY68GI</Company>
     <Product>肌忆五笔</Product>

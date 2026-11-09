@@ -11,6 +11,7 @@
 - 可拖动、可整体缩放，可调整 25%–100% 透明度。
 - 可选“潜移默化模式”，每 5 秒轻提示一个键位。
 - 主界面用于版本、外观、启动和更新设置。
+- 支持统一暗色、浅色主题即时切换。
 - 关闭主界面不会退出程序；可通过系统托盘重新打开主界面、显示/隐藏键盘或彻底退出。
 - 关于页包含软件信息、日志入口、GitHub 地址和更新检查。
 - 启动时自动检查 GitHub Release，也可手动检查。
@@ -64,15 +65,15 @@ dotnet run --project .\src\PassiveWubi\PassiveWubi.csproj
 生成 Windows 64 位单文件便携包：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.0.0
+powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.0.1
 ```
 
 输出：
 
 ```text
-dist/PassiveWubi-v1.0.0-win-x64/
-dist/PassiveWubi-v1.0.0-win-x64.zip
-dist/PassiveWubi-v1.0.0-win-x64.zip.sha256
+dist/PassiveWubi-v1.0.1-win-x64/
+dist/PassiveWubi-v1.0.1-win-x64.zip
+dist/PassiveWubi-v1.0.1-win-x64.zip.sha256
 ```
 
 ## 发布
