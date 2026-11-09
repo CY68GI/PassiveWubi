@@ -1,0 +1,57 @@
+name: Build and release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version number (for example 1.0.0)
+        required: true
+        default: "1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Resolve version
+        id: version
+        shell: pwsh
+        run: |
+          $version = if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "${{ inputs.version }}"
+          } else {
+            "${{ github.ref_name }}".TrimStart("v")
+          }
+          "value=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build portable release
+        shell: pwsh
+        run: ./scripts/build-release.ps1 -Version "${{ steps.version.outputs.value }}"
+
+      - name: Publish GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $version = "${{ steps.version.outputs.value }}"
+          $tag = "v$version"
+          $zip = "dist/PassiveWubi-v$version-win-x64.zip"
+          $hash = "$zip.sha256"
+          gh release create $tag $zip $hash `
+            --title "肌忆五笔 v$version" `
+            --generate-notes `
+            --target "${{ github.sha }}"

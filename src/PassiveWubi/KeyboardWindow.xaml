@@ -1,0 +1,464 @@
+<Window x:Class="PassiveWubi.KeyboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+        Title="肌忆五笔置顶键盘"
+        Width="1240"
+        Height="520"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Topmost="True"
+        Icon="Assets/PassiveWubi.ico"
+        Closing="Window_Closing"
+        LocationChanged="Window_LocationChanged">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="OverlayButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#D7E0ED" />
+            <Setter Property="Background" Value="#20FFFFFF" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="13,7" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="7"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#35FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.7" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Viewbox Stretch="Fill">
+        <Border x:Name="Surface"
+                Width="1240"
+                Height="520"
+                Margin="8"
+                CornerRadius="17"
+                Background="#F2131B2A"
+                BorderBrush="#35FFFFFF"
+                BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="24"
+                                  ShadowDepth="6"
+                                  Direction="270"
+                                  Opacity="0.42"
+                                  Color="#000000" />
+            </Border.Effect>
+            <Grid ClipToBounds="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="68" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="36" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        x:Name="DragHeader"
+                        Background="Transparent"
+                        MouseLeftButtonDown="DragHeader_MouseLeftButtonDown">
+                    <Grid Margin="20,0,17,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="35"
+                                    Height="35"
+                                    CornerRadius="10"
+                                    Background="#E9654F">
+                                <TextBlock Text="五"
+                                           Foreground="White"
+                                           FontSize="19"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Border>
+                            <TextBlock Text="肌忆五笔"
+                                       Foreground="White"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       Margin="11,0,0,0" />
+                            <Border Background="#24FFFFFF"
+                                    CornerRadius="10"
+                                    Padding="9,4"
+                                    Margin="11,0,0,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock x:Name="VersionChipText"
+                                           Text="86 版"
+                                           Foreground="#F2B6AA"
+                                           FontSize="10.5"
+                                           FontWeight="SemiBold" />
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <Ellipse Width="6" Height="6" Fill="#6BC49A" />
+                            <TextBlock Text="横" Foreground="#8F9CAF" FontSize="10.5" Margin="5,0,14,0" />
+                            <Ellipse Width="6" Height="6" Fill="#65AFE1" />
+                            <TextBlock Text="竖" Foreground="#8F9CAF" FontSize="10.5" Margin="5,0,14,0" />
+                            <Ellipse Width="6" Height="6" Fill="#EF725E" />
+                            <TextBlock Text="撇" Foreground="#8F9CAF" FontSize="10.5" Margin="5,0,14,0" />
+                            <Ellipse Width="6" Height="6" Fill="#E7AE54" />
+                            <TextBlock Text="捺" Foreground="#8F9CAF" FontSize="10.5" Margin="5,0,14,0" />
+                            <Ellipse Width="6" Height="6" Fill="#AD8AE5" />
+                            <TextBlock Text="折" Foreground="#8F9CAF" FontSize="10.5" Margin="5,0,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Button Content="设置"
+                                    Style="{StaticResource OverlayButton}"
+                                    Click="OpenSettings_Click" />
+                            <Button Content="隐藏"
+                                    Style="{StaticResource OverlayButton}"
+                                    Margin="8,0,0,0"
+                                    Click="HideKeyboard_Click" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1" Margin="26,0,26,2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <ItemsControl x:Name="TopRowItems"
+                                  Grid.Row="0"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="108"
+                                        Height="118"
+                                        Margin="4"
+                                        CornerRadius="10"
+                                        BorderThickness="1"
+                                        ToolTip="{Binding AccessibleText}"
+                                        AutomationProperties.Name="{Binding AccessibleText}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#172233" />
+                                            <Setter Property="BorderBrush" Value="#24FFFFFF" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Background" Value="#263243" />
+                                                    <Setter Property="BorderBrush" Value="{Binding AccentBrush}" />
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="18"
+                                                                              ShadowDepth="0"
+                                                                              Opacity="0.55"
+                                                                              Color="#E9654F" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid ClipToBounds="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Border Background="{Binding AccentBrush}"
+                                                CornerRadius="10,10,0,0"
+                                                Opacity="0.9" />
+                                        <Grid Grid.Row="1" Margin="10,6,10,7">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="22" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid>
+                                                <TextBlock Text="{Binding Key}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontFamily="Consolas"
+                                                           FontSize="15"
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Left" />
+                                                <TextBlock Text="{Binding Zone}"
+                                                           Foreground="#718096"
+                                                           FontSize="8.5"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Center" />
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="White"
+                                                           FontSize="31"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Top"
+                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
+                                                <TextBlock Text="{Binding RootMnemonic}"
+                                                           Foreground="#ADB9CA"
+                                                           FontSize="9.5"
+                                                           LineHeight="12.5"
+                                                           TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           HorizontalAlignment="Stretch"
+                                                           VerticalAlignment="Bottom"
+                                                           Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <ItemsControl x:Name="HomeRowItems"
+                                  Grid.Row="1"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="108"
+                                        Height="118"
+                                        Margin="4"
+                                        CornerRadius="10"
+                                        BorderThickness="1"
+                                        ToolTip="{Binding AccessibleText}"
+                                        AutomationProperties.Name="{Binding AccessibleText}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#172233" />
+                                            <Setter Property="BorderBrush" Value="#24FFFFFF" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Background" Value="#263243" />
+                                                    <Setter Property="BorderBrush" Value="{Binding AccentBrush}" />
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="18"
+                                                                              ShadowDepth="0"
+                                                                              Opacity="0.55"
+                                                                              Color="#E9654F" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid ClipToBounds="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Border Background="{Binding AccentBrush}"
+                                                CornerRadius="10,10,0,0"
+                                                Opacity="0.9" />
+                                        <Grid Grid.Row="1" Margin="10,6,10,7">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="22" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid>
+                                                <TextBlock Text="{Binding Key}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontFamily="Consolas"
+                                                           FontSize="15"
+                                                           FontWeight="Bold" />
+                                                <TextBlock Text="{Binding Zone}"
+                                                           Foreground="#718096"
+                                                           FontSize="8.5"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Center" />
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="White"
+                                                           FontSize="31"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Top"
+                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
+                                                <TextBlock Text="{Binding RootMnemonic}"
+                                                           Foreground="#ADB9CA"
+                                                           FontSize="9.5"
+                                                           LineHeight="12.5"
+                                                           TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           VerticalAlignment="Bottom"
+                                                           Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <ItemsControl x:Name="BottomRowItems"
+                                  Grid.Row="2"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="108"
+                                        Height="118"
+                                        Margin="4"
+                                        CornerRadius="10"
+                                        BorderThickness="1"
+                                        ToolTip="{Binding AccessibleText}"
+                                        AutomationProperties.Name="{Binding AccessibleText}">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="#172233" />
+                                            <Setter Property="BorderBrush" Value="#24FFFFFF" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+                                                    <Setter Property="Background" Value="#263243" />
+                                                    <Setter Property="BorderBrush" Value="{Binding AccentBrush}" />
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="18"
+                                                                              ShadowDepth="0"
+                                                                              Opacity="0.55"
+                                                                              Color="#E9654F" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid ClipToBounds="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Border Background="{Binding AccentBrush}"
+                                                CornerRadius="10,10,0,0"
+                                                Opacity="0.9" />
+                                        <Grid Grid.Row="1" Margin="10,6,10,7">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="22" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <Grid>
+                                                <TextBlock Text="{Binding Key}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontFamily="Consolas"
+                                                           FontSize="15"
+                                                           FontWeight="Bold" />
+                                                <TextBlock Text="{Binding Zone}"
+                                                           Foreground="#718096"
+                                                           FontSize="8.5"
+                                                           HorizontalAlignment="Right"
+                                                           VerticalAlignment="Center" />
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="White"
+                                                           FontSize="31"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Top"
+                                                           Visibility="{Binding ShowSimpleCode, Converter={StaticResource BoolToVisibility}}" />
+                                                <TextBlock Text="{Binding RootMnemonic}"
+                                                           Foreground="#ADB9CA"
+                                                           FontSize="9.5"
+                                                           LineHeight="12.5"
+                                                           TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           VerticalAlignment="Bottom"
+                                                           Visibility="{Binding ShowRootHint, Converter={StaticResource BoolToVisibility}}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+
+                <Grid Grid.Row="2" Margin="21,0,17,0">
+                    <TextBlock Text="拖动顶部移动 · 拖动右下角缩放 · 关闭主界面不会退出程序"
+                               Foreground="#6E7C90"
+                               FontSize="10.5"
+                               VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <TextBlock x:Name="LearningModeText"
+                                   Text="潜移默化模式 · 每 5 秒轻提示"
+                                   Foreground="#8290A5"
+                                   FontSize="10"
+                                   Margin="0,0,12,0"
+                                   VerticalAlignment="Center" />
+                        <Border Width="7"
+                                Height="7"
+                                CornerRadius="4"
+                                Background="#6BC49A"
+                                Margin="0,0,5,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="置顶"
+                                   Foreground="#8290A5"
+                                   FontSize="10"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <controls:Thumb x:Name="ResizeThumb"
+                                    Width="26"
+                                    Height="26"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Cursor="SizeNWSE"
+                                    DragDelta="ResizeThumb_DragDelta"
+                                    DragCompleted="ResizeThumb_DragCompleted">
+                        <controls:Thumb.Template>
+                            <ControlTemplate TargetType="controls:Thumb">
+                                <Grid Background="Transparent">
+                                    <Path Data="M 9,23 L 23,9 M 14,23 L 23,14 M 19,23 L 23,19"
+                                          Stroke="#718096"
+                                          StrokeThickness="1.5"
+                                          StrokeStartLineCap="Round"
+                                          StrokeEndLineCap="Round" />
+                                </Grid>
+                            </ControlTemplate>
+                        </controls:Thumb.Template>
+                    </controls:Thumb>
+                </Grid>
+            </Grid>
+        </Border>
+    </Viewbox>
+</Window>

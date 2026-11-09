@@ -1,0 +1,704 @@
+<Window x:Class="PassiveWubi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="肌忆五笔 PassiveWubi"
+        Width="1120"
+        Height="760"
+        MinWidth="980"
+        MinHeight="660"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource CanvasBrush}"
+        Icon="Assets/PassiveWubi.ico"
+        Closing="Window_Closing"
+        Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="224" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="{StaticResource SidebarBrush}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="24,26,20,34">
+                    <Grid Width="240" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Width="44"
+                                Height="44"
+                                CornerRadius="13"
+                                Background="{StaticResource AccentBrush}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top">
+                            <TextBlock Text="五"
+                                       Foreground="White"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="13,2,0,0">
+                            <TextBlock Text="肌忆五笔"
+                                       Foreground="White"
+                                       FontSize="20"
+                                       FontWeight="SemiBold" />
+                            <TextBlock Text="PassiveWubi"
+                                       Foreground="#8D9AAF"
+                                       FontSize="12"
+                                       Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="设置"
+                               Foreground="#657288"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Margin="27,0,0,8" />
+                    <RadioButton x:Name="NavSettings"
+                                 Style="{StaticResource NavItem}"
+                                 GroupName="Navigation"
+                                 Content="键盘与学习"
+                                 Tag="settings"
+                                 IsChecked="True"
+                                 Checked="Navigation_Checked" />
+                    <RadioButton x:Name="NavAbout"
+                                 Style="{StaticResource NavItem}"
+                                 GroupName="Navigation"
+                                 Content="关于"
+                                 Tag="about"
+                                 Checked="Navigation_Checked" />
+                    <RadioButton x:Name="NavChangelog"
+                                 Style="{StaticResource NavItem}"
+                                 GroupName="Navigation"
+                                 Content="更新日志"
+                                 Tag="changelog"
+                                 Checked="Navigation_Checked" />
+                </StackPanel>
+
+                <Border Grid.Row="3"
+                        Margin="18,0,18,20"
+                        Padding="14"
+                        CornerRadius="10"
+                        Background="#182235">
+                    <StackPanel>
+                        <TextBlock Text="背景常驻"
+                                   Foreground="#C9D2DF"
+                                   FontSize="12"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="关闭主界面后，程序仍在托盘运行。"
+                                   Foreground="#78869A"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   Margin="0,5,0,0"
+                                   LineHeight="17" />
+                        <TextBlock x:Name="SidebarVersionText"
+                                   Text="v1.0.0"
+                                   Foreground="#657288"
+                                   FontSize="11"
+                                   Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="84" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="34,0,34,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="PageTitleText"
+                               Text="键盘与学习"
+                               FontSize="25"
+                               FontWeight="Bold" />
+                    <TextBlock x:Name="PageSubtitleText"
+                               Text="选择你的五笔版本，让键位在视线边缘慢慢变成肌肉记忆。"
+                               Foreground="{StaticResource MutedBrush}"
+                               FontSize="12.5"
+                               Margin="0,6,0,0" />
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Border Padding="12,7"
+                            Margin="0,0,10,0"
+                            CornerRadius="16"
+                            Background="#EAF7F1">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="7"
+                                     Height="7"
+                                     Fill="#47A979"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,7,0" />
+                            <TextBlock x:Name="OverlayStatusText"
+                                       Text="置顶键盘运行中"
+                                       Foreground="#337B5B"
+                                       FontSize="12" />
+                        </StackPanel>
+                    </Border>
+                    <Button Content="隐藏主界面"
+                            Style="{StaticResource SecondaryButton}"
+                            Click="HideMainWindow_Click" />
+                </StackPanel>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="34,4,34,34">
+                    <Grid x:Name="SettingsPage">
+                        <StackPanel>
+                            <Border CornerRadius="16"
+                                    Padding="26"
+                                    Margin="0,0,0,18">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#182235" Offset="0" />
+                                        <GradientStop Color="#293A52" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="让视线先学会，让手指随后记住"
+                                                   Foreground="White"
+                                                   FontSize="22"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text="置顶键盘每 5 秒轻轻点亮一个键位，不打断工作，也不额外安排练习。"
+                                                   Foreground="#AEBACB"
+                                                   FontSize="12.5"
+                                                   TextWrapping="Wrap"
+                                                   MaxWidth="540"
+                                                   Margin="0,10,0,0"
+                                                   LineHeight="20" />
+                                        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                                            <Button Content="显示置顶键盘"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Click="ShowKeyboard_Click" />
+                                            <Button Content="隐藏置顶键盘"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Margin="10,0,0,0"
+                                                    Click="HideKeyboard_Click" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Border Grid.Column="1"
+                                            Width="138"
+                                            Height="138"
+                                            CornerRadius="69"
+                                            Background="#0DFFFFFF"
+                                            BorderBrush="#16FFFFFF"
+                                            BorderThickness="1"
+                                            Margin="28,0,0,0">
+                                        <StackPanel HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="当前版本"
+                                                       Foreground="#8795A9"
+                                                       FontSize="11"
+                                                       HorizontalAlignment="Center" />
+                                            <TextBlock x:Name="HeroVersionText"
+                                                       Text="86 版"
+                                                       Foreground="White"
+                                                       FontSize="28"
+                                                       FontWeight="Bold"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,6,0,0" />
+                                            <TextBlock Text="25 键字根"
+                                                       Foreground="#E99A8C"
+                                                       FontSize="11"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,4,0,0" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <TextBlock Text="五笔版本"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Margin="2,0,0,10" />
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <RadioButton x:Name="Version86Radio"
+                                             Style="{StaticResource VersionCard}"
+                                             GroupName="WubiVersion"
+                                             Tag="V86"
+                                             AutomationProperties.Name="五笔 86 版"
+                                             Checked="Version_Checked">
+                                    <StackPanel>
+                                        <TextBlock Text="86 版"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text="经典稳定，学习资料最丰富"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="0,5,0,0"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton x:Name="Version98Radio"
+                                             Grid.Column="1"
+                                             Style="{StaticResource VersionCard}"
+                                             GroupName="WubiVersion"
+                                             Tag="V98"
+                                             AutomationProperties.Name="五笔 98 版"
+                                             Checked="Version_Checked">
+                                    <StackPanel>
+                                        <TextBlock Text="98 版"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text="字根分布更均衡，重码更少"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="0,5,0,0"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton x:Name="NewCenturyRadio"
+                                             Grid.Column="2"
+                                             Margin="0"
+                                             Style="{StaticResource VersionCard}"
+                                             GroupName="WubiVersion"
+                                             Tag="NewCentury"
+                                             AutomationProperties.Name="五笔新世纪版"
+                                             Checked="Version_Checked">
+                                    <StackPanel>
+                                        <TextBlock Text="新世纪版"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text="规范字形，兼顾生僻与繁体字"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="0,5,0,0"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </RadioButton>
+                            </Grid>
+
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <TextBlock Text="置顶键盘外观"
+                                               FontSize="16"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="拖动键盘顶部可移动位置，拖动右下角手柄可整体缩放。"
+                                               Foreground="{StaticResource MutedBrush}"
+                                               FontSize="11.5"
+                                               Margin="0,5,0,20" />
+
+                                    <Grid Margin="0,0,0,18">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="64" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="透明度"
+                                                   FontSize="13.5"
+                                                   VerticalAlignment="Center" />
+                                        <Slider x:Name="OpacitySlider"
+                                                Grid.Column="1"
+                                                AutomationProperties.Name="键盘透明度"
+                                                Minimum="0.25"
+                                                Maximum="1"
+                                                SmallChange="0.01"
+                                                LargeChange="0.05"
+                                                TickFrequency="0.05"
+                                                IsSnapToTickEnabled="False"
+                                                VerticalAlignment="Center"
+                                                ValueChanged="OpacitySlider_ValueChanged"
+                                                PreviewMouseLeftButtonUp="OpacitySlider_MouseUp" />
+                                        <TextBlock x:Name="OpacityValueText"
+                                                   Grid.Column="2"
+                                                   Text="90%"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,22">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="130" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="64" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="整体大小"
+                                                   FontSize="13.5"
+                                                   VerticalAlignment="Center" />
+                                        <Slider x:Name="ScaleSlider"
+                                                Grid.Column="1"
+                                                AutomationProperties.Name="键盘整体大小"
+                                                Minimum="0.60"
+                                                Maximum="1.45"
+                                                SmallChange="0.01"
+                                                LargeChange="0.05"
+                                                TickFrequency="0.05"
+                                                VerticalAlignment="Center"
+                                                ValueChanged="ScaleSlider_ValueChanged"
+                                                PreviewMouseLeftButtonUp="ScaleSlider_MouseUp" />
+                                        <TextBlock x:Name="ScaleValueText"
+                                                   Grid.Column="2"
+                                                   Text="100%"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="12"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox x:Name="ShowSimpleCodesToggle"
+                                                  Content="显示一级简码"
+                                                  Style="{StaticResource ToggleSwitch}"
+                                                  Margin="0,0,40,0"
+                                                  Click="OptionToggle_Click" />
+                                        <CheckBox x:Name="ShowRootHintsToggle"
+                                                  Grid.Column="1"
+                                                  Content="显示字根口诀"
+                                                  Style="{StaticResource ToggleSwitch}"
+                                                  Click="OptionToggle_Click" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <TextBlock Text="学习与启动"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,18" />
+                                    <CheckBox x:Name="PassiveHighlightToggle"
+                                              Content="每 5 秒轻提示一个键位（潜移默化模式）"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Margin="0,0,0,18"
+                                              Click="OptionToggle_Click" />
+                                    <CheckBox x:Name="ShowKeyboardOnStartupToggle"
+                                              Content="启动软件时显示置顶键盘"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Margin="0,0,0,18"
+                                              Click="OptionToggle_Click" />
+                                    <CheckBox x:Name="AutoUpdateToggle"
+                                              Content="启动时自动检查更新"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Margin="0,0,0,18"
+                                              Click="OptionToggle_Click" />
+                                    <CheckBox x:Name="StartupToggle"
+                                              Content="随 Windows 自动启动"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              Click="StartupToggle_Click" />
+                                </StackPanel>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
+                                <Button Content="恢复默认外观"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Click="ResetAppearance_Click" />
+                                <Button Content="打开日志目录"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Margin="10,0,0,0"
+                                        Click="OpenLogFolder_Click" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="AboutPage" Visibility="Collapsed">
+                        <StackPanel>
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="78" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="64"
+                                            Height="64"
+                                            CornerRadius="18"
+                                            Background="{StaticResource AccentBrush}">
+                                        <TextBlock Text="五"
+                                                   Foreground="White"
+                                                   FontSize="34"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="肌忆五笔"
+                                                   FontSize="25"
+                                                   FontWeight="Bold" />
+                                        <TextBlock Text="PassiveWubi"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="13"
+                                                   Margin="0,4,0,0" />
+                                    </StackPanel>
+                                    <Border Grid.Column="2"
+                                            Background="#FFF3F0"
+                                            CornerRadius="14"
+                                            Padding="12,7"
+                                            VerticalAlignment="Center">
+                                        <TextBlock x:Name="AboutVersionText"
+                                                   Text="v1.0.0"
+                                                   Foreground="{StaticResource AccentDarkBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="18" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="软件信息"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,15" />
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="88" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="中文名称"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="肌忆五笔" FontSize="12.5" />
+                                        </Grid>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="88" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="英文名称"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="PassiveWubi" FontSize="12.5" />
+                                        </Grid>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="88" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="技术栈"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="C# / WPF / .NET 10" FontSize="12.5" />
+                                        </Grid>
+                                        <Grid Margin="0,0,0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="88" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="运行平台"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="Windows 10 / 11 64 位" FontSize="12.5" />
+                                        </Grid>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="88" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="开源许可"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="MIT License" FontSize="12.5" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="开源与反馈"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,9" />
+                                        <TextBlock Text="源码、问题反馈和新版本都在 GitHub。"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   LineHeight="19" />
+                                        <TextBlock Text="github.com/CY68GI/PassiveWubi"
+                                                   Foreground="{StaticResource AccentDarkBrush}"
+                                                   FontSize="12"
+                                                   Margin="0,10,0,15"
+                                                   TextWrapping="Wrap" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="打开仓库"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Click="OpenRepository_Click" />
+                                            <Button Content="问题反馈"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Margin="8,0,0,0"
+                                                    Click="OpenIssues_Click" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="运行日志"
+                                                       FontSize="16"
+                                                       FontWeight="SemiBold" />
+                                            <TextBlock Text="日志按日期保存在软件目录的 logs 文件夹，便于反馈问题时定位。"
+                                                       Foreground="{StaticResource MutedBrush}"
+                                                       FontSize="11.5"
+                                                       Margin="0,5,0,0" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Button Content="打开今日日志"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Click="OpenTodayLog_Click" />
+                                            <Button Content="日志目录"
+                                                    Style="{StaticResource SecondaryButton}"
+                                                    Margin="8,0,0,0"
+                                                    Click="OpenLogFolder_Click" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <Border Background="#F7F8FA"
+                                            BorderBrush="{StaticResource LineBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Padding="12"
+                                            Margin="0,15,0,0">
+                                        <TextBlock x:Name="LogPathText"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="11"
+                                                   TextWrapping="Wrap" />
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="软件更新"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock x:Name="UpdateStatusText"
+                                                   Text="当前版本 v1.0.0"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="12"
+                                                   Margin="0,6,0,0" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center">
+                                        <Button x:Name="ReleasePageButton"
+                                                Content="打开发布页"
+                                                Style="{StaticResource SecondaryButton}"
+                                                Visibility="Collapsed"
+                                                Margin="0,0,8,0"
+                                                Click="OpenReleasePage_Click" />
+                                        <Button x:Name="CheckUpdateButton"
+                                                Content="检查更新"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Click="CheckUpdate_Click" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="ChangelogPage" Visibility="Collapsed">
+                        <StackPanel>
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{StaticResource AccentBrush}"
+                                                CornerRadius="12"
+                                                Padding="9,5"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="v1.0.0"
+                                                       Foreground="White"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold" />
+                                        </Border>
+                                        <TextBlock Text="首个公开版本"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="12,0,0,0"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="2026-11-09"
+                                                   Foreground="{StaticResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="14,1,0,0"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <Border Height="1"
+                                            Background="{StaticResource LineBrush}"
+                                            Margin="0,18,0,16" />
+                                    <TextBlock Text="肌忆五笔第一次与大家见面。"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,12" />
+                                    <TextBlock Foreground="{StaticResource MutedBrush}"
+                                               FontSize="12.5"
+                                               LineHeight="23">
+                                        <Run Text="•  支持五笔 86 版、98 版和新世纪版键位切换" /><LineBreak />
+                                        <Run Text="•  屏幕置顶的 26 键学习键盘，可调透明度与整体大小" /><LineBreak />
+                                        <Run Text="•  一级简码与字根口诀同时呈现，每 5 秒轻提示一个键位" /><LineBreak />
+                                        <Run Text="•  主界面关闭后常驻系统托盘，支持开机启动" /><LineBreak />
+                                        <Run Text="•  软件目录内按日记录运行日志，并可从关于页一键打开" /><LineBreak />
+                                        <Run Text="•  启动自动检查更新，也可从主界面或托盘手动检查" /><LineBreak />
+                                        <Run Text="•  单文件 Windows 64 位便携发布，源码与编译产物分离" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardStyle}">
+                                <StackPanel>
+                                    <TextBlock Text="版本约定"
+                                               FontSize="16"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="版本号采用语义化格式 主版本.次版本.修订号。功能更新提升次版本，问题修复提升修订号。每次发布都会同步更新本页面与 GitHub Release。"
+                                               Foreground="{StaticResource MutedBrush}"
+                                               FontSize="12.5"
+                                               TextWrapping="Wrap"
+                                               LineHeight="22"
+                                               Margin="0,10,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

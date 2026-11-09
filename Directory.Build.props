@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- Keep all generated files out of the source tree. -->
+    <BaseOutputPath>$(MSBuildThisFileDirectory)dist\build\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)dist\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>
