@@ -12,6 +12,9 @@
 - 可选“潜移默化模式”，每 5 秒轻提示一个键位。
 - 主界面用于版本、外观、启动和更新设置。
 - 支持统一暗色、浅色主题即时切换。
+- 主界面内置打字练习：速度测试、五笔口诀、字根、拆字与词组练习。
+- 速度测试可选择内置文章或自定义文字，并设置 1–50 分钟测试时间。
+- 键位练习按当前 86/98/新世纪版本加载对应题目。
 - 关闭主界面不会退出程序；可通过系统托盘重新打开主界面、显示/隐藏键盘或彻底退出。
 - 关于页包含软件信息、日志入口、GitHub 地址和更新检查。
 - 启动时自动检查 GitHub Release，也可手动检查。
@@ -86,28 +89,28 @@ dotnet run --project .\src\PassiveWubi\PassiveWubi.csproj
 生成 Windows 64 位单文件便携包：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.1.0
+powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.2.0
 ```
 
 输出：
 
 ```text
-dist/PassiveWubi-v1.1.0-win-x64/
-dist/PassiveWubi-v1.1.0-win-x64.zip
-dist/PassiveWubi-v1.1.0-win-x64.zip.sha256
+dist/PassiveWubi-v1.2.0-win-x64/
+dist/PassiveWubi-v1.2.0-win-x64.zip
+dist/PassiveWubi-v1.2.0-win-x64.zip.sha256
 ```
 
 生成 Ubuntu Linux x64 自包含包：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-linux-release.ps1 -Version 1.1.0
+powershell -ExecutionPolicy Bypass -File .\scripts\build-linux-release.ps1 -Version 1.2.0
 ```
 
-Linux 包输出为 `dist/PassiveWubi-Linux-x64-v1.1.0.tar.gz` 及同名 `.sha256` 文件。
+Linux 包输出为 `dist/PassiveWubi-Linux-x64-v1.2.0.tar.gz` 及同名 `.sha256` 文件。
 
 ## 发布
 
-推送形如 `v1.1.0` 的标签会触发 `.github/workflows/release.yml`，同时构建 Windows ZIP 与 Linux TAR.GZ，并创建包含四个附件的 GitHub Release。
+推送形如 `v1.2.0` 的标签会触发 `.github/workflows/release.yml`，同时构建 Windows ZIP 与 Linux TAR.GZ，并创建包含四个附件的 GitHub Release。
 
 ## 致谢
 

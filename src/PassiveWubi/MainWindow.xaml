@@ -1,6 +1,7 @@
 <Window x:Class="PassiveWubi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:PassiveWubi.Views"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="肌忆五笔 PassiveWubi"
         Width="1120"
@@ -200,6 +201,12 @@
                                  Tag="settings"
                                  IsChecked="True"
                                  Checked="Navigation_Checked" />
+                    <RadioButton x:Name="NavPractice"
+                                 Style="{StaticResource NavItem}"
+                                 GroupName="Navigation"
+                                 Content="打字练习"
+                                 Tag="practice"
+                                 Checked="Navigation_Checked" />
                     <RadioButton x:Name="NavAbout"
                                  Style="{StaticResource NavItem}"
                                  GroupName="Navigation"
@@ -231,7 +238,7 @@
                                    Margin="0,5,0,0"
                                    LineHeight="17" />
                         <TextBlock x:Name="SidebarVersionText"
-                                   Text="v1.1.0"
+                                   Text="v1.2.0"
                                    Foreground="{DynamicResource FaintBrush}"
                                    FontSize="11"
                                    Margin="0,12,0,0" />
@@ -555,6 +562,10 @@
                         </StackPanel>
                     </Grid>
 
+                    <Grid x:Name="PracticePage" Visibility="Collapsed">
+                        <views:PracticeView x:Name="PracticeViewControl" />
+                    </Grid>
+
                     <Grid x:Name="AboutPage" Visibility="Collapsed">
                         <StackPanel>
                             <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
@@ -590,7 +601,7 @@
                                             Padding="12,7"
                                             VerticalAlignment="Center">
                                         <TextBlock x:Name="AboutVersionText"
-                                                   Text="v1.1.0"
+                                                   Text="v1.2.0"
                                                    Foreground="{DynamicResource AccentTextBrush}"
                                                    FontSize="12"
                                                    FontWeight="SemiBold" />
@@ -742,7 +753,7 @@
                                                    FontSize="16"
                                                    FontWeight="SemiBold" />
                                         <TextBlock x:Name="UpdateStatusText"
-                                                   Text="当前版本 v1.1.0"
+                                                   Text="当前版本 v1.2.0"
                                                    Foreground="{DynamicResource MutedBrush}"
                                                    FontSize="12"
                                                    Margin="0,6,0,0" />
@@ -768,6 +779,43 @@
 
                     <Grid x:Name="ChangelogPage" Visibility="Collapsed">
                         <StackPanel>
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{DynamicResource AccentBrush}"
+                                                CornerRadius="12"
+                                                Padding="9,5"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="v1.2.0"
+                                                       Foreground="{DynamicResource OnAccentBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold" />
+                                        </Border>
+                                        <TextBlock Foreground="{DynamicResource InkBrush}" Text="打字练习"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="12,0,0,0"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="2026-11-10"
+                                                   Foreground="{DynamicResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="14,1,0,0"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <Border Height="1"
+                                            Background="{DynamicResource LineBrush}"
+                                            Margin="0,18,0,16" />
+                                    <TextBlock Foreground="{DynamicResource MutedBrush}"
+                                               FontSize="12.5"
+                                               LineHeight="23">
+                                        <Run Text="•  新增可计时、可自定义文章的速度测试" /><LineBreak />
+                                        <Run Text="•  新增口诀、字根、拆字和词组练习" /><LineBreak />
+                                        <Run Text="•  拆字和词组分类随 86/98/新世纪版本切换题目" /><LineBreak />
+                                        <Run Text="•  Windows 与 Ubuntu 共用练习题库和答案判定" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
                             <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">

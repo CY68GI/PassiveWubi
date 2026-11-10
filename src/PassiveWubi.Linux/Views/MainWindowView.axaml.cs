@@ -73,6 +73,14 @@ public partial class MainWindowView : Window
         }
     }
 
+    private void MainTabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (MainTabs?.SelectedIndex == 1)
+        {
+            PracticeViewControl?.RefreshForVersion();
+        }
+    }
+
     private void Opacity_Changed(object? sender, RangeBaseValueChangedEventArgs e)
     {
         if (_loading || OpacityValueText is null)

@@ -1,0 +1,128 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PassiveWubi.Linux.Views.PracticeView">
+    <TabControl>
+        <TabItem Header="速度测试">
+            <ScrollViewer>
+                <StackPanel Spacing="14" Margin="0,14,0,0">
+                    <Border BorderBrush="#33000000" BorderThickness="1" CornerRadius="12" Padding="18">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="速度测试" FontSize="18" FontWeight="SemiBold" />
+                            <Grid ColumnDefinitions="100,*,100,120,Auto">
+                                <TextBlock Text="测试文字" VerticalAlignment="Center" />
+                                <ComboBox x:Name="SpeedTextCombo" Grid.Column="1" Margin="0,0,14,0"
+                                          SelectionChanged="SpeedText_Changed" />
+                                <TextBlock Grid.Column="2" Text="测试时间" VerticalAlignment="Center" />
+                                <TextBox x:Name="SpeedMinutesInput" Grid.Column="3"
+                                         Text="3" MaxLength="2" Margin="0,0,14,0"
+                                         PlaceholderText="分钟（1–50）" />
+                                <Button Grid.Column="4" Content="开始测试" Classes="accent"
+                                        Click="SpeedStart_Click" />
+                            </Grid>
+                            <TextBox x:Name="CustomTextInput" Height="76" IsVisible="False"
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     Text="在这里输入自定义测试文字。" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="#33000000" BorderThickness="1" CornerRadius="12" Padding="18">
+                        <StackPanel Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="测试文本" FontWeight="SemiBold" />
+                                <TextBlock x:Name="SpeedTimerText" Grid.Column="1" Text="03:00"
+                                           FontFamily="monospace" FontSize="20" FontWeight="Bold" />
+                            </Grid>
+                            <Border Background="#12000000" BorderBrush="#33000000" BorderThickness="1"
+                                    CornerRadius="9" Padding="16">
+                                <TextBlock x:Name="SpeedTargetText" Text="准备好后点击“开始测试”。"
+                                           FontSize="18" TextWrapping="Wrap" LineHeight="30" />
+                            </Border>
+                            <TextBox x:Name="SpeedInput" MinHeight="145" FontSize="17"
+                                     AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True"
+                                     PlaceholderText="开始后在这里输入测试文字"
+                                     TextChanged="SpeedInput_TextChanged" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <TextBlock x:Name="SpeedCpmText" Text="0 字/分钟" />
+                                    <TextBlock x:Name="SpeedAccuracyText" Text="正确率 0%" />
+                                    <TextBlock x:Name="SpeedCountText" Text="0 字" />
+                                </StackPanel>
+                                <Button Grid.Column="1" Content="重新开始" Click="SpeedReset_Click" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem Header="键位练习">
+            <ScrollViewer>
+                <StackPanel Spacing="14" Margin="0,14,0,0">
+                    <Border BorderBrush="#33000000" BorderThickness="1" CornerRadius="12" Padding="18">
+                        <Grid ColumnDefinitions="100,220,100,260,*">
+                            <TextBlock Text="练习类型" VerticalAlignment="Center" />
+                            <ComboBox x:Name="PracticeKindCombo" Grid.Column="1" Margin="0,0,14,0"
+                                      SelectedIndex="2" SelectionChanged="PracticeKind_Changed">
+                                <ComboBoxItem Content="五笔口诀练习" Tag="mnemonic" />
+                                <ComboBoxItem Content="五笔字根练习" Tag="root" />
+                                <ComboBoxItem Content="五笔拆字练习" Tag="character" />
+                                <ComboBoxItem Content="五笔词组练习" Tag="phrase" />
+                            </ComboBox>
+                            <TextBlock x:Name="SubcategoryLabel" Grid.Column="2"
+                                       Text="拆字分类" VerticalAlignment="Center" />
+                            <ComboBox x:Name="SubcategoryCombo" Grid.Column="3"
+                                      SelectionChanged="Subcategory_Changed" />
+                            <TextBlock x:Name="VersionLabelText" Grid.Column="4"
+                                       Opacity="0.65" HorizontalAlignment="Right"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <Border BorderBrush="#33000000" BorderThickness="1" CornerRadius="12" Padding="20">
+                        <StackPanel Spacing="14">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Orientation="Horizontal" Spacing="14">
+                                    <TextBlock x:Name="PracticeCategoryText" FontWeight="SemiBold" />
+                                    <TextBlock x:Name="PracticeProgressText" Opacity="0.62" />
+                                </StackPanel>
+                                <TextBlock x:Name="PracticeAccuracyText" Grid.Column="1"
+                                           Text="正确率 0%" Opacity="0.68" />
+                            </Grid>
+                            <Border Background="#12000000" BorderBrush="#33000000" BorderThickness="1"
+                                    CornerRadius="11" MinHeight="165" Padding="22">
+                                <StackPanel VerticalAlignment="Center" Spacing="8">
+                                    <TextBlock Text="题目" FontSize="11" Opacity="0.55"
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock x:Name="PracticePromptText" Text="正在加载题目…"
+                                               FontSize="34" FontWeight="SemiBold" TextAlignment="Center"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock x:Name="PracticeHintText" TextAlignment="Center"
+                                               Opacity="0.62" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <TextBox x:Name="PracticeAnswerInput" FontFamily="monospace"
+                                         FontSize="20" PlaceholderText="输入五笔编码后按 Enter"
+                                         KeyDown="PracticeAnswer_KeyDown" />
+                                <Button Grid.Column="1" Content="提交" Classes="accent"
+                                        Margin="10,0,0,0" Click="PracticeSubmit_Click" />
+                                <Button Grid.Column="2" Content="下一题" Margin="8,0,0,0"
+                                        Click="PracticeNext_Click" />
+                            </Grid>
+                            <Border x:Name="PracticeFeedbackBorder" Background="#12000000"
+                                    BorderBrush="#33000000" BorderThickness="1"
+                                    CornerRadius="9" Padding="12">
+                                <StackPanel Spacing="6">
+                                    <TextBlock x:Name="PracticeFeedbackText"
+                                               Text="选择练习类型后开始答题。" TextWrapping="Wrap" />
+                                    <TextBlock x:Name="PracticeBreakdownText" Opacity="0.65"
+                                               FontSize="12" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</UserControl>

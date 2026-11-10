@@ -118,11 +118,17 @@ public partial class MainWindow : Window
 
         var selected = (sender as RadioButton)?.Tag?.ToString();
         SettingsPage.Visibility = selected == "settings" ? Visibility.Visible : Visibility.Collapsed;
+        PracticePage.Visibility = selected == "practice" ? Visibility.Visible : Visibility.Collapsed;
         AboutPage.Visibility = selected == "about" ? Visibility.Visible : Visibility.Collapsed;
         ChangelogPage.Visibility = selected == "changelog" ? Visibility.Visible : Visibility.Collapsed;
 
         switch (selected)
         {
+            case "practice":
+                PageTitleText.Text = "打字练习";
+                PageSubtitleText.Text = "练习速度、字根、拆字与词组，题目随五笔版本变化。";
+                PracticeViewControl.ActivatePractice();
+                break;
             case "about":
                 PageTitleText.Text = "关于";
                 PageSubtitleText.Text = "版本信息、运行日志、开源地址与更新检查。";
