@@ -1,0 +1,222 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="PassiveWubi.Linux.Views.KeyboardWindow"
+        Title="肌忆五笔置顶键盘"
+        Width="1240"
+        Height="520"
+        MinWidth="744"
+        MinHeight="312"
+        CanResize="False"
+        ShowInTaskbar="False"
+        Topmost="True"
+        WindowDecorations="None"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        WindowStartupLocation="Manual"
+        Icon="avares://PassiveWubi.Linux/Assets/PassiveWubi.ico">
+    <Window.Styles>
+        <Style Selector="Button.overlay">
+            <Setter Property="Background" Value="#22FFFFFF" />
+            <Setter Property="Foreground" Value="#E1E8F2" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="7" />
+            <Setter Property="Padding" Value="13,7" />
+        </Style>
+        <Style Selector="Button.overlay:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#38FFFFFF" />
+        </Style>
+    </Window.Styles>
+
+    <Border Margin="8"
+            CornerRadius="17"
+            Background="#F2131B2A"
+            BorderBrush="#35FFFFFF"
+            BorderThickness="1"
+            BoxShadow="0 8 24 0 #66000000">
+        <Grid RowDefinitions="68,*,36">
+            <Grid Grid.Row="0" Margin="20,0,17,0" PointerPressed="Header_PointerPressed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="35" Height="35" CornerRadius="10" Background="#EF725E">
+                        <TextBlock Text="五" Foreground="White" FontSize="19" FontWeight="Bold"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="肌忆五笔" Foreground="White" FontSize="16" FontWeight="SemiBold"
+                               Margin="11,0,0,0" VerticalAlignment="Center" />
+                    <Border Background="#24FFFFFF" CornerRadius="10" Padding="9,4"
+                            Margin="11,0,0,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="VersionChipText" Foreground="#F2B6AA"
+                                   FontSize="10.5" FontWeight="SemiBold" />
+                    </Border>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="横 竖 撇 捺 折 · 字根表"
+                           Foreground="#8F9CAF" FontSize="11"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Classes="overlay" Content="设置" Click="OpenSettings_Click" />
+                    <Button Classes="overlay" Content="隐藏" Margin="8,0,0,0" Click="HideKeyboard_Click" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="26,0,26,2" RowDefinitions="*,*,*">
+                <ItemsControl x:Name="TopRowItems" Grid.Row="0"
+                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="108" Height="124" Margin="4"
+                                    CornerRadius="10"
+                                    Background="{Binding TileBackground}"
+                                    BorderBrush="{Binding TileBorderBrush}"
+                                    BorderThickness="1"
+                                    ToolTip.Tip="{Binding AccessibleText}">
+                                <Grid RowDefinitions="3,*">
+                                    <Border Grid.Row="0" Background="{Binding AccentBrush}"
+                                            CornerRadius="10,10,0,0" />
+                                    <Grid Grid.Row="1" Margin="10,6,10,7" RowDefinitions="22,28,*">
+                                        <Grid ColumnDefinitions="*,*">
+                                            <TextBlock Text="{Binding Key}" Foreground="{Binding AccentBrush}"
+                                                       FontFamily="monospace" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Zone}"
+                                                       Foreground="#718096" FontSize="8.5"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="{Binding KeyName}" Foreground="White"
+                                                       FontSize="21" FontWeight="SemiBold" />
+                                            <Border Grid.Column="1" Background="#18FFFFFF" CornerRadius="5"
+                                                    Padding="5,2" IsVisible="{Binding ShowSimpleCode}">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontSize="10.5" FontWeight="SemiBold" />
+                                            </Border>
+                                        </Grid>
+                                        <TextBlock Grid.Row="2" Text="{Binding RootTableText}"
+                                                   Foreground="#C2CCDA" FontSize="11.2" LineHeight="13.8"
+                                                   TextAlignment="Center" TextWrapping="Wrap"
+                                                   HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                                   IsVisible="{Binding ShowRootTable}" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl x:Name="HomeRowItems" Grid.Row="1"
+                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="108" Height="124" Margin="4"
+                                    CornerRadius="10"
+                                    Background="{Binding TileBackground}"
+                                    BorderBrush="{Binding TileBorderBrush}"
+                                    BorderThickness="1"
+                                    ToolTip.Tip="{Binding AccessibleText}">
+                                <Grid RowDefinitions="3,*">
+                                    <Border Grid.Row="0" Background="{Binding AccentBrush}"
+                                            CornerRadius="10,10,0,0" />
+                                    <Grid Grid.Row="1" Margin="10,6,10,7" RowDefinitions="22,28,*">
+                                        <Grid ColumnDefinitions="*,*">
+                                            <TextBlock Text="{Binding Key}" Foreground="{Binding AccentBrush}"
+                                                       FontFamily="monospace" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Zone}"
+                                                       Foreground="#718096" FontSize="8.5"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="{Binding KeyName}" Foreground="White"
+                                                       FontSize="21" FontWeight="SemiBold" />
+                                            <Border Grid.Column="1" Background="#18FFFFFF" CornerRadius="5"
+                                                    Padding="5,2" IsVisible="{Binding ShowSimpleCode}">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontSize="10.5" FontWeight="SemiBold" />
+                                            </Border>
+                                        </Grid>
+                                        <TextBlock Grid.Row="2" Text="{Binding RootTableText}"
+                                                   Foreground="#C2CCDA" FontSize="11.2" LineHeight="13.8"
+                                                   TextAlignment="Center" TextWrapping="Wrap"
+                                                   IsVisible="{Binding ShowRootTable}" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl x:Name="BottomRowItems" Grid.Row="2"
+                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="108" Height="124" Margin="4"
+                                    CornerRadius="10"
+                                    Background="{Binding TileBackground}"
+                                    BorderBrush="{Binding TileBorderBrush}"
+                                    BorderThickness="1"
+                                    ToolTip.Tip="{Binding AccessibleText}">
+                                <Grid RowDefinitions="3,*">
+                                    <Border Grid.Row="0" Background="{Binding AccentBrush}"
+                                            CornerRadius="10,10,0,0" />
+                                    <Grid Grid.Row="1" Margin="10,6,10,7" RowDefinitions="22,28,*">
+                                        <Grid ColumnDefinitions="*,*">
+                                            <TextBlock Text="{Binding Key}" Foreground="{Binding AccentBrush}"
+                                                       FontFamily="monospace" FontSize="15" FontWeight="Bold" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Zone}"
+                                                       Foreground="#718096" FontSize="8.5"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                        </Grid>
+                                        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="{Binding KeyName}" Foreground="White"
+                                                       FontSize="21" FontWeight="SemiBold" />
+                                            <Border Grid.Column="1" Background="#18FFFFFF" CornerRadius="5"
+                                                    Padding="5,2" IsVisible="{Binding ShowSimpleCode}">
+                                                <TextBlock Text="{Binding SimpleCode}"
+                                                           Foreground="{Binding AccentBrush}"
+                                                           FontSize="10.5" FontWeight="SemiBold" />
+                                            </Border>
+                                        </Grid>
+                                        <TextBlock Grid.Row="2" Text="{Binding RootTableText}"
+                                                   Foreground="#C2CCDA" FontSize="11.2" LineHeight="13.8"
+                                                   TextAlignment="Center" TextWrapping="Wrap"
+                                                   IsVisible="{Binding ShowRootTable}" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="21,0,17,0" ColumnDefinitions="*,Auto">
+                <TextBlock Text="拖动顶部移动 · 在设置中调整大小和透明度"
+                           Foreground="#6E7C90" FontSize="10.5" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="LearningModeText" Foreground="#8290A5"
+                               FontSize="10" Margin="0,0,12,0" />
+                    <Border Width="7" Height="7" CornerRadius="4" Background="#6BC49A"
+                            Margin="0,0,5,0" VerticalAlignment="Center" />
+                    <TextBlock Text="置顶" Foreground="#8290A5" FontSize="10" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

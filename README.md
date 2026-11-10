@@ -15,15 +15,19 @@
 - 关闭主界面不会退出程序；可通过系统托盘重新打开主界面、显示/隐藏键盘或彻底退出。
 - 关于页包含软件信息、日志入口、GitHub 地址和更新检查。
 - 启动时自动检查 GitHub Release，也可手动检查。
-- 可选随 Windows 启动。
+- Windows 支持随 Windows 启动，Ubuntu 支持通过 XDG 登录桌面自启动。
 - 日志按日期保存在程序目录的 `logs` 文件夹。
 
 ## 系统要求
 
-- Windows 10 或 Windows 11，64 位。
-- Release 包为自包含单文件程序，不需要另外安装 .NET。
+- Windows 10 / 11 x64：WPF 客户端。
+- Ubuntu 22.04 / 24.04 x64：Avalonia Linux 客户端。
+- Release 包均为自包含程序，不需要另外安装 .NET。
+- 其他 Linux 发行版暂未列入官方支持范围。
 
 ## 使用
+
+### Windows
 
 1. 从 [Releases](https://github.com/CY68GI/PassiveWubi/releases) 下载最新的 `PassiveWubi-v*-win-x64.zip`。
 2. 解压到普通用户可写的目录，例如 `D:\Apps\PassiveWubi`。
@@ -33,6 +37,15 @@
 6. 关闭主界面后，从系统托盘双击图标重新打开；退出软件请使用托盘菜单。
 
 > 请勿只把 exe 放进受保护的 `Program Files` 目录。设置和日志需要写入程序所在目录，便携版应放在用户可写目录。
+
+### Ubuntu Linux
+
+1. 下载 `PassiveWubi-Linux-x64-v*.tar.gz`。
+2. 解压后进入目录。
+3. 可选执行 `bash install-ubuntu.sh` 安装到用户目录；也可以直接 `chmod +x PassiveWubi.Linux` 后运行。
+4. 已安装时可在应用菜单搜索“肌忆五笔”，或在终端运行 `passivewubi`。
+
+Ubuntu 的置顶与透明效果依赖桌面合成器。GNOME 托盘图标可能需要 AppIndicator 扩展；主窗口和键盘内部均提供设置与隐藏入口。
 
 ## 数据与隐私
 
@@ -46,11 +59,15 @@
 
 ```text
 PassiveWubi/
-├─ src/PassiveWubi/        C# / WPF 源码与图标资源
-├─ scripts/                本地发布与图标生成脚本
+├─ src/PassiveWubi.Core/   跨平台五笔版本、键位和字根数据
+├─ src/PassiveWubi/        Windows C# / WPF 源码
+├─ src/PassiveWubi.Linux/  Ubuntu/Linux C# / Avalonia 源码
+├─ packaging/linux/        Ubuntu 安装脚本
+├─ scripts/                Windows/Linux 发布与图标生成脚本
 ├─ .github/workflows/      GitHub Actions 发布流程
 ├─ dist/                   编译产物（已忽略，不进入源码提交）
 ├─ PassiveWubi.sln
+├─ ABOUT.md
 ├─ CHANGELOG.md
 └─ LICENSE
 ```
@@ -59,7 +76,7 @@ PassiveWubi/
 
 ## 本地构建
 
-需要 .NET 10 SDK 和 Windows Desktop 运行时/目标包。
+需要 .NET 10 SDK。Windows 客户端还需要 Windows Desktop 目标包。
 
 ```powershell
 dotnet build .\PassiveWubi.sln -c Release
@@ -69,20 +86,28 @@ dotnet run --project .\src\PassiveWubi\PassiveWubi.csproj
 生成 Windows 64 位单文件便携包：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.0.2
+powershell -ExecutionPolicy Bypass -File .\scripts\build-release.ps1 -Version 1.1.0
 ```
 
 输出：
 
 ```text
-dist/PassiveWubi-v1.0.2-win-x64/
-dist/PassiveWubi-v1.0.2-win-x64.zip
-dist/PassiveWubi-v1.0.2-win-x64.zip.sha256
+dist/PassiveWubi-v1.1.0-win-x64/
+dist/PassiveWubi-v1.1.0-win-x64.zip
+dist/PassiveWubi-v1.1.0-win-x64.zip.sha256
 ```
+
+生成 Ubuntu Linux x64 自包含包：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\build-linux-release.ps1 -Version 1.1.0
+```
+
+Linux 包输出为 `dist/PassiveWubi-Linux-x64-v1.1.0.tar.gz` 及同名 `.sha256` 文件。
 
 ## 发布
 
-推送形如 `v1.0.0` 的标签会触发 `.github/workflows/release.yml`，在 Windows Runner 上构建便携包并创建 GitHub Release。也可以手动运行发布脚本后上传 `dist` 中的 zip 和校验文件。
+推送形如 `v1.1.0` 的标签会触发 `.github/workflows/release.yml`，同时构建 Windows ZIP 与 Linux TAR.GZ，并创建包含四个附件的 GitHub Release。
 
 ## 致谢
 

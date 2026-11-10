@@ -49,6 +49,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Copy-Item -LiteralPath (Join-Path $projectRoot 'README.md') -Destination $publishDir
+Copy-Item -LiteralPath (Join-Path $projectRoot 'ABOUT.md') -Destination $publishDir
 Copy-Item -LiteralPath (Join-Path $projectRoot 'CHANGELOG.md') -Destination $publishDir
 Copy-Item -LiteralPath (Join-Path $projectRoot 'LICENSE') -Destination $publishDir
 

@@ -1,6 +1,6 @@
-using PassiveWubi.Models;
+using PassiveWubi.Core;
 
-namespace PassiveWubi.Data;
+namespace PassiveWubi.Core;
 
 // Root characters are kept separately from mnemonic text. The keyboard renders
 // the key name, level-one code and the root set for the selected Wubi edition.

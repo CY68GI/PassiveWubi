@@ -231,7 +231,7 @@
                                    Margin="0,5,0,0"
                                    LineHeight="17" />
                         <TextBlock x:Name="SidebarVersionText"
-                                   Text="v1.0.2"
+                                   Text="v1.1.0"
                                    Foreground="{DynamicResource FaintBrush}"
                                    FontSize="11"
                                    Margin="0,12,0,0" />
@@ -590,7 +590,7 @@
                                             Padding="12,7"
                                             VerticalAlignment="Center">
                                         <TextBlock x:Name="AboutVersionText"
-                                                   Text="v1.0.2"
+                                                   Text="v1.1.0"
                                                    Foreground="{DynamicResource AccentTextBrush}"
                                                    FontSize="12"
                                                    FontWeight="SemiBold" />
@@ -648,7 +648,7 @@
                                             <TextBlock Text="运行平台"
                                                        Foreground="{DynamicResource MutedBrush}"
                                                        FontSize="12" />
-                                            <TextBlock Foreground="{DynamicResource InkBrush}" Grid.Column="1" Text="Windows 10 / 11 64 位" FontSize="12.5" />
+                                            <TextBlock Foreground="{DynamicResource InkBrush}" Grid.Column="1" Text="Windows 10/11 · Ubuntu 22.04/24.04 x64" FontSize="12.5" TextWrapping="Wrap" />
                                         </Grid>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -742,7 +742,7 @@
                                                    FontSize="16"
                                                    FontWeight="SemiBold" />
                                         <TextBlock x:Name="UpdateStatusText"
-                                                   Text="当前版本 v1.0.2"
+                                                   Text="当前版本 v1.1.0"
                                                    Foreground="{DynamicResource MutedBrush}"
                                                    FontSize="12"
                                                    Margin="0,6,0,0" />
@@ -768,6 +768,44 @@
 
                     <Grid x:Name="ChangelogPage" Visibility="Collapsed">
                         <StackPanel>
+                            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="{DynamicResource AccentBrush}"
+                                                CornerRadius="12"
+                                                Padding="9,5"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="v1.1.0"
+                                                       Foreground="{DynamicResource OnAccentBrush}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold" />
+                                        </Border>
+                                        <TextBlock Foreground="{DynamicResource InkBrush}" Text="Ubuntu Linux 支持"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="12,0,0,0"
+                                                   VerticalAlignment="Center" />
+                                        <TextBlock Text="2026-11-10"
+                                                   Foreground="{DynamicResource MutedBrush}"
+                                                   FontSize="11.5"
+                                                   Margin="14,1,0,0"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <Border Height="1"
+                                            Background="{DynamicResource LineBrush}"
+                                            Margin="0,18,0,16" />
+                                    <TextBlock Foreground="{DynamicResource MutedBrush}"
+                                               FontSize="12.5"
+                                               LineHeight="23">
+                                        <Run Text="•  新增基于 Avalonia 的独立 Linux 客户端" /><LineBreak />
+                                        <Run Text="•  首批支持 Ubuntu 22.04 / 24.04 x64" /><LineBreak />
+                                        <Run Text="•  Linux 支持置顶字根表、透明度、缩放、主题、托盘与 XDG 自启动" /><LineBreak />
+                                        <Run Text="•  Windows 与 Linux 共用 PassiveWubi.Core 字根数据" /><LineBreak />
+                                        <Run Text="•  新增项目级 ABOUT.md 和 Ubuntu 安装脚本" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
                             <Border Style="{StaticResource CardStyle}" Margin="0,0,0,18">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">

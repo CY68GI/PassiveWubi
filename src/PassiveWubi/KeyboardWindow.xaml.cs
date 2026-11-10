@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using PassiveWubi.Data;
 using PassiveWubi.Models;
 
 namespace PassiveWubi;

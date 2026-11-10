@@ -38,9 +38,13 @@ jobs:
           }
           "value=$version" >> $env:GITHUB_OUTPUT
 
-      - name: Build portable release
+      - name: Build Windows release
         shell: pwsh
         run: ./scripts/build-release.ps1 -Version "${{ steps.version.outputs.value }}"
+
+      - name: Build Linux release
+        shell: pwsh
+        run: ./scripts/build-linux-release.ps1 -Version "${{ steps.version.outputs.value }}"
 
       - name: Publish GitHub Release
         shell: pwsh
@@ -49,9 +53,11 @@ jobs:
         run: |
           $version = "${{ steps.version.outputs.value }}"
           $tag = "v$version"
-          $zip = "dist/PassiveWubi-v$version-win-x64.zip"
-          $hash = "$zip.sha256"
-          gh release create $tag $zip $hash `
+          $windowsZip = "dist/PassiveWubi-v$version-win-x64.zip"
+          $windowsHash = "$windowsZip.sha256"
+          $linuxArchive = "dist/PassiveWubi-Linux-x64-v$version.tar.gz"
+          $linuxHash = "$linuxArchive.sha256"
+          gh release create $tag $windowsZip $windowsHash $linuxArchive $linuxHash `
             --title "肌忆五笔 v$version" `
             --generate-notes `
             --target "${{ github.sha }}"
