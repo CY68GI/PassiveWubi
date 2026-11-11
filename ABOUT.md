@@ -17,7 +17,7 @@
 - 练习题库随五笔版本切换。
 - 关于、更新日志、日志目录、GitHub 更新检查。
 - Windows 用户启动项和 Ubuntu XDG 自启动。
-- 设置、日志和运行数据只写入程序目录，便于便携使用和完整清理。
+- 设置、日志和运行数据只写入程序目录的 `PassiveWubiData/` 子目录，便于便携使用和完整清理。
 
 ## 架构
 
@@ -37,20 +37,20 @@ test/       Dart/Flutter 测试
 
 - Windows 10 / 11 x64。
 - Ubuntu 22.04 / 24.04 x64。
-- Windows 是正式构建和 GitHub Release 平台；Ubuntu 用于开发测试与本地打包验证。
+- Windows 提供 ZIP 发布包；Ubuntu 提供 `.deb` 发布包，并承担开发测试。
 - Ubuntu 的置顶和透明效果依赖桌面合成器；GNOME 托盘可能需要 AppIndicator 扩展，应用内设置按钮和托盘入口均可使用。
 - 其他 Linux 发行版尚未列入官方支持范围。
 
 ## Ubuntu 安装
 
-以下 `.deb` 仅用于 Ubuntu 开发测试，不作为 GitHub 正式发布附件：
+Ubuntu `.deb` 会作为 GitHub Release 附件发布：
 
 ```bash
-sudo dpkg -i PassiveWubi-Flutter-v2.1.0-linux-amd64.deb
+sudo dpkg -i PassiveWubi-Flutter-v2.1.1-linux-amd64.deb
 passivewubi
 ```
 
-程序需要在自身目录中写入 `settings.json` 和 `logs/`。便携运行时请将程序放在当前用户可写目录中。
+程序在自身目录的 `PassiveWubiData/` 中写入 `settings.json` 和 `logs/`。便携运行时请将程序放在当前用户可写目录中。
 
 ## 项目地址
 

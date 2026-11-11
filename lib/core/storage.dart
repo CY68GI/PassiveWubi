@@ -12,15 +12,18 @@ class AppStorage {
 
   static Future<AppStorage> create() async {
     final base = File(Platform.resolvedExecutable).parent.path;
-    final programDirectory = Directory(base);
-    final probe = File(p.join(base, '.write-test-$pid'));
+    final dataDirectory = Directory(p.join(base, 'PassiveWubiData'));
+    final probe = File(p.join(dataDirectory.path, '.write-test-$pid'));
     try {
-      await programDirectory.create(recursive: true);
+      await dataDirectory.create(recursive: true);
       await probe.writeAsString('ok', flush: true);
       await probe.delete();
-      return AppStorage._(programDirectory);
+      return AppStorage._(dataDirectory);
     } catch (error) {
-      throw StateError('PassiveWubi 需要写入程序目录以保存设置和日志：$base\n$error');
+      throw StateError(
+        'PassiveWubi 需要写入程序目录下的 PassiveWubiData 文件夹：'
+        '${dataDirectory.path}\n$error',
+      );
     }
   }
 

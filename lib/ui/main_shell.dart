@@ -491,7 +491,7 @@ class _MainShellState extends State<MainShell> {
                   _InfoRow('英文名称', 'PassiveWubi'),
                   _InfoRow('技术栈', 'Flutter / Dart'),
                   _InfoRow('平台', 'Windows 10/11 · Ubuntu Linux'),
-                  _InfoRow('程序数据', '设置与日志均保存在程序目录'),
+                  _InfoRow('程序数据', '设置与日志均保存在程序目录 PassiveWubiData 文件夹'),
                   _InfoRow('开源许可', 'MIT License'),
                   const Divider(height: 28),
                   Align(
@@ -635,7 +635,7 @@ class _MainShellState extends State<MainShell> {
                 '• 主界面与置顶键盘改为独立窗口，可同时显示并由主界面控制显隐\n'
                 '• 重绘所有图标为橙色圆角矩形和白色“五”，移除悬浮键盘透明阴影\n'
                 '• 修复 Ubuntu 界面闪烁，设置和日志统一保存到程序目录\n'
-                '• 正式构建与 GitHub Release 仅在 Windows 上执行\n'
+                '• Windows 构建 Windows 包，Ubuntu 构建 deb，Windows 统一发布\n'
                 '• 增加对王永民先生、DeepSeek V4 Flash 和 ChatGPT Codex 的致谢\n'
                 '• 修复无仓库上下文时 GitHub Release 无法创建和上传附件的问题\n'
                 '• 修复 GitHub Release 附件路径，恢复 Windows 与 Ubuntu 发布包上传\n'

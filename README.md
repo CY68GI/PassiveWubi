@@ -16,12 +16,12 @@
 - 词题库：二字、三字、四字、混合词组、混合乱序。
 - 练习题目跟随当前五笔版本变化。
 - 关于、更新日志、运行日志、GitHub 更新检查和开机启动。
-- 设置、日志和其他运行数据只保存在程序目录；日志位于程序目录的 `logs` 文件夹。
+- 设置、日志和其他运行数据只保存在程序目录的 `PassiveWubiData/` 文件夹。
 
 ## 平台
 
-- Windows 10 / 11 x64：正式构建、发布和支持平台。
-- Ubuntu 22.04 / 24.04 x64：用于开发、兼容性测试和本地 `.deb` 验证，不向 GitHub 提交 Linux 构建产物。
+- Windows 10 / 11 x64：提供 Windows ZIP 发布包。
+- Ubuntu 22.04 / 24.04 x64：提供 Ubuntu `.deb` 发布包，并用于开发与兼容性测试。
 - 其他 Linux 发行版暂未列入官方支持范围。
 
 ## 开发环境
@@ -37,19 +37,19 @@ flutter analyze
 Windows 构建：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.1.0
+powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.1.1
 ```
 
-Ubuntu/Linux 本地开发测试：
+Ubuntu/Linux 构建：
 
 ```bash
 flutter build linux --release
-bash packaging/linux/build_deb.sh 2.1.0
+bash packaging/linux/build_deb.sh 2.1.1
 ```
 
 Ubuntu 构建需要 GTK 3、X11、Xi、Clang、CMake、Ninja 和 pkg-config。项目 CI 使用 Ubuntu 24.04。
 
-GitHub Actions 只使用 Windows runner 生成并提交 Windows 发布包。Ubuntu runner 只运行分析和测试，不生成或上传发布构建。
+GitHub Actions 使用 Windows runner 构建 Windows ZIP，使用 Ubuntu runner 构建并测试 `.deb`；最终由 Windows 发布任务统一上传全部 Release 附件。
 
 ## 目录
 

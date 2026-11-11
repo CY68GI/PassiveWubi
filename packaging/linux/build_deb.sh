@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="${1:-2.1.0}"
+VERSION="${1:-2.1.1}"
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUNDLE="$ROOT/build/linux/x64/release/bundle"
 STAGE="$ROOT/dist/passivewubi-deb-$VERSION"
@@ -14,6 +14,7 @@ fi
 
 rm -rf "$STAGE"
 mkdir -p "$STAGE/DEBIAN" "$STAGE/usr/lib/passivewubi" \
+  "$STAGE/usr/lib/passivewubi/PassiveWubiData" \
   "$STAGE/usr/bin" "$STAGE/usr/share/applications" \
   "$STAGE/usr/share/icons/hicolor/scalable/apps" \
   "$STAGE/usr/share/doc/passivewubi" "$STAGE/usr/share/man/man1" \
@@ -90,6 +91,7 @@ find "$STAGE" -type d -exec chmod 755 {} +
 find "$STAGE" -type f -exec chmod 644 {} +
 chmod 755 "$STAGE/usr/lib/passivewubi/passive_wubi"
 chmod 755 "$STAGE/usr/bin/passivewubi"
+chmod 777 "$STAGE/usr/lib/passivewubi/PassiveWubiData"
 
 if command -v patchelf >/dev/null 2>&1; then
   find "$STAGE/usr/lib/passivewubi" -type f -name '*.so*' \

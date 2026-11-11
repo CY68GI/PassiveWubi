@@ -1,5 +1,14 @@
 # 更新日志
 
+## v2.1.1 - 2026-11-11
+
+### Ubuntu 发布
+
+- GitHub Release 恢复 Ubuntu `.deb` 构建和附件上传。
+- Windows 继续构建 Windows ZIP，最终 Release 仍由 Windows 任务统一发布。
+- 程序设置和日志统一放入程序目录的 `PassiveWubiData/` 子目录。
+- Ubuntu 安装包创建可写 `PassiveWubiData/` 目录，解决系统安装目录不可写问题。
+
 ## v2.1.0 - 2026-11-11
 
 ### 桌面体验
