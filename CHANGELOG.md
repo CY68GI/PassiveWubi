@@ -1,6 +1,6 @@
 # 更新日志
 
-## v2.0.0 - 2026-11-11
+## v2.0.1 - 2026-11-11
 
 ### 架构迁移
 
@@ -14,6 +14,12 @@
 - 增加速度测试、五笔口诀、字根、拆字和词组练习。
 - 增加 Windows 目录发布包和 Ubuntu `.deb` 构建流程。
 - 增加 Flutter/Dart 测试和 Windows/Linux CI。
+
+### 打包修正
+
+- 修复 Ubuntu `.deb` 中 Flutter 插件库的 RUNPATH，使安装后可正常定位插件。
+- 增加 Debian changelog、copyright、man page 和 lintian override。
+- Release 工作流改为先创建或复用 Release，再分别上传构建附件。
 
 ## v1.2.0 - 2026-11-10
 

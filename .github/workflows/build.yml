@@ -39,10 +39,10 @@ jobs:
       - name: Install Linux desktop dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libx11-dev libxi-dev liblzma-dev clang cmake ninja-build pkg-config xvfb
+          sudo apt-get install -y libgtk-3-dev libx11-dev libxi-dev liblzma-dev clang cmake ninja-build pkg-config xvfb patchelf
       - name: Test and build Linux
         run: |
           flutter pub get
           flutter test
           flutter build linux --release
-          bash packaging/linux/build_deb.sh 2.0.0
+          bash packaging/linux/build_deb.sh 2.0.1

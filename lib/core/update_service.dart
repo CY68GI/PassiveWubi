@@ -20,7 +20,7 @@ class UpdateResult {
 }
 
 class UpdateService {
-  static const currentVersion = '2.0.0';
+  static const currentVersion = '2.0.1';
   static const releasesUrl = 'https://github.com/CY68GI/PassiveWubi/releases';
   static const apiUrl =
       'https://api.github.com/repos/CY68GI/PassiveWubi/releases/latest';

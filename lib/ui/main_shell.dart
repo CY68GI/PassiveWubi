@@ -32,7 +32,7 @@ class _MainShellState extends State<MainShell> {
   MainSection _section = MainSection.settings;
   bool _startupEnabled = false;
   bool _checkingUpdate = false;
-  String _updateStatus = '当前版本 v2.0.0';
+  String _updateStatus = '当前版本 v2.0.1';
 
   AppRuntime get runtime => widget.runtime;
 
@@ -136,7 +136,7 @@ class _MainShellState extends State<MainShell> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text('v2.0.0 · Flutter',
+                        Text('v2.0.1 · Flutter',
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: theme.colorScheme.onSurface.withValues(alpha: .48),
                             )),
@@ -434,7 +434,7 @@ class _MainShellState extends State<MainShell> {
                       ],
                     ),
                   ),
-                  Chip(label: const Text('v2.0.0')),
+                  Chip(label: const Text('v2.0.1')),
                 ],
               ),
             ),
@@ -534,7 +534,7 @@ class _MainShellState extends State<MainShell> {
             children: [
               const Row(
                 children: [
-                  Chip(label: Text('v2.0.0')),
+                  Chip(label: Text('v2.0.1')),
                   SizedBox(width: 10),
                   Text('Flutter / Dart 跨平台重构',
                       style:

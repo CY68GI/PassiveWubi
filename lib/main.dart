@@ -20,7 +20,7 @@ Future<void> main() async {
   final settings = await storage.loadSettings();
   final catalog = await PracticeCatalog.load();
   final log = AppLogger(storage);
-  await log.info('PassiveWubi Flutter 2.0.0 starting.');
+  await log.info('PassiveWubi Flutter 2.0.1 starting.');
 
   await windowManager.ensureInitialized();
 
