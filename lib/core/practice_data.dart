@@ -77,7 +77,8 @@ class EditionData {
     required this.words4,
   });
 
-  List<PracticeItem> characterItems(CharacterExercise exercise) => switch (exercise) {
+  List<PracticeItem> characterItems(CharacterExercise exercise) =>
+      switch (exercise) {
         CharacterExercise.formingRoot => formingRoots,
         CharacterExercise.keyName => keyNames,
         CharacterExercise.common => common,
@@ -89,13 +90,16 @@ class EditionData {
       };
 
   List<PracticeItem> phraseItems(PhraseExercise exercise) => switch (exercise) {
-        PhraseExercise.two => words2,
-        PhraseExercise.three => words3,
-        PhraseExercise.four => words4,
-        PhraseExercise.mixed => [...words2, ...words3, ...words4],
-        PhraseExercise.mixedShuffled => [...words2, ...words3, ...words4]
-          ..shuffle(Random()),
-      };
+    PhraseExercise.two => words2,
+    PhraseExercise.three => words3,
+    PhraseExercise.four => words4,
+    PhraseExercise.mixed => [...words2, ...words3, ...words4],
+    PhraseExercise.mixedShuffled => [
+      ...words2,
+      ...words3,
+      ...words4,
+    ]..shuffle(Random()),
+  };
 }
 
 class PracticeCatalog {
@@ -114,7 +118,9 @@ class PracticeCatalog {
   }
 
   static Future<PracticeCatalog> load() async {
-    final source = await rootBundle.loadString('assets/data/practice-data.json');
+    final source = await rootBundle.loadString(
+      'assets/data/practice-data.json',
+    );
     final json = jsonDecode(source) as Map<String, dynamic>;
     final editions = <String, EditionData>{};
     for (final entry in json.entries) {
@@ -140,20 +146,25 @@ class PracticeCatalog {
 
   static List<PracticeItem> _items(dynamic value) =>
       (value as List<dynamic>? ?? const [])
-          .map((item) => PracticeItem(
-                prompt: (item as Map<String, dynamic>)['prompt']?.toString() ?? '',
-                code: item['code']?.toString() ?? '',
-                category: item['category']?.toString() ?? '',
-              ))
+          .map(
+            (item) => PracticeItem(
+              prompt:
+                  (item as Map<String, dynamic>)['prompt']?.toString() ?? '',
+              code: item['code']?.toString() ?? '',
+              category: item['category']?.toString() ?? '',
+            ),
+          )
           .where((item) => item.prompt.isNotEmpty && item.code.isNotEmpty)
           .toList();
 
   static List<MnemonicItem> _mnemonics(dynamic value) =>
       (value as List<dynamic>? ?? const [])
-          .map((item) => MnemonicItem(
-                key: (item as Map<String, dynamic>)['key']?.toString() ?? '',
-                text: item['text']?.toString() ?? '',
-              ))
+          .map(
+            (item) => MnemonicItem(
+              key: (item as Map<String, dynamic>)['key']?.toString() ?? '',
+              text: item['text']?.toString() ?? '',
+            ),
+          )
           .where((item) => item.key.isNotEmpty && item.text.isNotEmpty)
           .toList();
 }

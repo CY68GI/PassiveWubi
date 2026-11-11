@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class UpdateResult {
@@ -20,17 +21,19 @@ class UpdateResult {
 }
 
 class UpdateService {
-  static const currentVersion = '2.0.1';
+  static const currentVersion = '2.0.2';
   static const releasesUrl = 'https://github.com/CY68GI/PassiveWubi/releases';
   static const apiUrl =
       'https://api.github.com/repos/CY68GI/PassiveWubi/releases/latest';
 
   static Future<UpdateResult> check() async {
     try {
-      final response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {'User-Agent': 'PassiveWubi-Flutter/$currentVersion'},
-      ).timeout(const Duration(seconds: 15));
+      final response = await http
+          .get(
+            Uri.parse(apiUrl),
+            headers: {'User-Agent': 'PassiveWubi-Flutter/$currentVersion'},
+          )
+          .timeout(const Duration(seconds: 15));
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body) as Map<String, dynamic>;
         return _resultFromTag(

@@ -5,12 +5,14 @@ import 'package:path/path.dart' as p;
 class StartupService {
   static Future<bool> isEnabled() async {
     if (Platform.isWindows) {
-      final result = await Process.run(
-        'reg',
-        ['query', r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run', '/v', 'PassiveWubi'],
-        runInShell: true,
-      );
-      return result.exitCode == 0 && result.stdout.toString().contains('PassiveWubi');
+      final result = await Process.run('reg', [
+        'query',
+        r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run',
+        '/v',
+        'PassiveWubi',
+      ], runInShell: true);
+      return result.exitCode == 0 &&
+          result.stdout.toString().contains('PassiveWubi');
     }
     if (Platform.isLinux) {
       return File(_linuxAutostartFile).exists();
@@ -23,33 +25,25 @@ class StartupService {
       if (Platform.isWindows) {
         final exe = Platform.resolvedExecutable.replaceAll('"', '\\"');
         if (enabled) {
-          await Process.run(
-            'reg',
-            [
-              'add',
-              r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run',
-              '/v',
-              'PassiveWubi',
-              '/t',
-              'REG_SZ',
-              '/d',
-              '"$exe"',
-              '/f',
-            ],
-            runInShell: true,
-          );
+          await Process.run('reg', [
+            'add',
+            r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run',
+            '/v',
+            'PassiveWubi',
+            '/t',
+            'REG_SZ',
+            '/d',
+            '"$exe"',
+            '/f',
+          ], runInShell: true);
         } else {
-          await Process.run(
-            'reg',
-            [
-              'delete',
-              r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run',
-              '/v',
-              'PassiveWubi',
-              '/f',
-            ],
-            runInShell: true,
-          );
+          await Process.run('reg', [
+            'delete',
+            r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run',
+            '/v',
+            'PassiveWubi',
+            '/f',
+          ], runInShell: true);
         }
       } else if (Platform.isLinux) {
         final file = File(_linuxAutostartFile);
@@ -73,9 +67,9 @@ class StartupService {
   }
 
   static String get _linuxAutostartFile => p.join(
-        Platform.environment['XDG_CONFIG_HOME'] ??
-            p.join(Platform.environment['HOME'] ?? '', '.config'),
-        'autostart',
-        'passivewubi.desktop',
-      );
+    Platform.environment['XDG_CONFIG_HOME'] ??
+        p.join(Platform.environment['HOME'] ?? '', '.config'),
+    'autostart',
+    'passivewubi.desktop',
+  );
 }

@@ -23,7 +23,11 @@ class AppStorage {
           ? p.join(Platform.environment['APPDATA'] ?? base, 'PassiveWubi')
           : p.join(
               Platform.environment['XDG_STATE_HOME'] ??
-                  p.join(Platform.environment['HOME'] ?? base, '.local', 'state'),
+                  p.join(
+                    Platform.environment['HOME'] ?? base,
+                    '.local',
+                    'state',
+                  ),
               'passivewubi',
             );
       final dir = Directory(fallback);
@@ -39,7 +43,8 @@ class AppStorage {
   Future<AppSettings> loadSettings() async {
     try {
       if (!await settingsFile.exists()) return AppSettings();
-      final json = jsonDecode(await settingsFile.readAsString()) as Map<String, dynamic>;
+      final json =
+          jsonDecode(await settingsFile.readAsString()) as Map<String, dynamic>;
       return AppSettings.fromJson(json);
     } catch (_) {
       return AppSettings();

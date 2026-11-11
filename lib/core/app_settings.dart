@@ -41,34 +41,37 @@ class AppSettings {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'edition': edition.name,
-        'theme': theme.name,
-        'keyboardOpacity': keyboardOpacity,
-        'keyboardScale': keyboardScale,
-        'showSimpleCodes': showSimpleCodes,
-        'showRootTable': showRootTable,
-        'passiveHighlight': passiveHighlight,
-        'showKeyboardOnStartup': showKeyboardOnStartup,
-        'autoCheckUpdates': autoCheckUpdates,
-        'launchAtStartup': launchAtStartup,
-        'hasCompletedFirstRun': hasCompletedFirstRun,
-        'keyboardLeft': keyboardLeft,
-        'keyboardTop': keyboardTop,
-      };
+    'edition': edition.name,
+    'theme': theme.name,
+    'keyboardOpacity': keyboardOpacity,
+    'keyboardScale': keyboardScale,
+    'showSimpleCodes': showSimpleCodes,
+    'showRootTable': showRootTable,
+    'passiveHighlight': passiveHighlight,
+    'showKeyboardOnStartup': showKeyboardOnStartup,
+    'autoCheckUpdates': autoCheckUpdates,
+    'launchAtStartup': launchAtStartup,
+    'hasCompletedFirstRun': hasCompletedFirstRun,
+    'keyboardLeft': keyboardLeft,
+    'keyboardTop': keyboardTop,
+  };
 
   factory AppSettings.fromJson(Map<String, dynamic> json) {
     final result = AppSettings();
     result.edition = _editionFrom(json['edition']);
     result.theme = _themeFrom(json['theme']);
-    result.keyboardOpacity = (json['keyboardOpacity'] as num?)?.toDouble() ?? 0.90;
+    result.keyboardOpacity =
+        (json['keyboardOpacity'] as num?)?.toDouble() ?? 0.90;
     result.keyboardScale = (json['keyboardScale'] as num?)?.toDouble() ?? 1.0;
     result.showSimpleCodes = json['showSimpleCodes'] as bool? ?? true;
     result.showRootTable = json['showRootTable'] as bool? ?? true;
     result.passiveHighlight = json['passiveHighlight'] as bool? ?? true;
-    result.showKeyboardOnStartup = json['showKeyboardOnStartup'] as bool? ?? true;
+    result.showKeyboardOnStartup =
+        json['showKeyboardOnStartup'] as bool? ?? true;
     result.autoCheckUpdates = json['autoCheckUpdates'] as bool? ?? true;
     result.launchAtStartup = json['launchAtStartup'] as bool? ?? false;
-    result.hasCompletedFirstRun = json['hasCompletedFirstRun'] as bool? ?? false;
+    result.hasCompletedFirstRun =
+        json['hasCompletedFirstRun'] as bool? ?? false;
     result.keyboardLeft = (json['keyboardLeft'] as num?)?.toDouble() ?? -1;
     result.keyboardTop = (json['keyboardTop'] as num?)?.toDouble() ?? -1;
     result.normalize();

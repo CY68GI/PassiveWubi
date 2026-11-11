@@ -101,51 +101,55 @@ class _OverlayScreenState extends State<OverlayScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           alignment: Alignment.center,
-                          child: const Text('五',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                                fontWeight: FontWeight.w700,
-                              )),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text('肌忆五笔',
+                          child: const Text(
+                            '五',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            )),
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          '肌忆五笔',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         const SizedBox(width: 10),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 9, vertical: 4),
+                            horizontal: 9,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: .10),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Text(settings.edition.label,
-                              style: const TextStyle(
-                                color: Color(0xFFF2B6AA),
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w600,
-                              )),
+                          child: Text(
+                            settings.edition.label,
+                            style: const TextStyle(
+                              color: Color(0xFFF2B6AA),
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                         const Spacer(),
-                        Text('横 竖 撇 捺 折 · 字根表',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: .48),
-                              fontSize: 11,
-                            )),
-                        const Spacer(),
-                        _OverlayButton(
-                          label: '设置',
-                          onTap: widget.onOpenMain,
+                        Text(
+                          '横 竖 撇 捺 折 · 字根表',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: .48),
+                            fontSize: 11,
+                          ),
                         ),
+                        const Spacer(),
+                        _OverlayButton(label: '设置', onTap: widget.onOpenMain),
                         const SizedBox(width: 8),
-                        _OverlayButton(
-                          label: '隐藏',
-                          onTap: widget.onHide,
-                        ),
+                        _OverlayButton(label: '隐藏', onTap: widget.onHide),
                       ],
                     ),
                   ),
@@ -159,14 +163,23 @@ class _OverlayScreenState extends State<OverlayScreen> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                for (var col = 0; col < keyboardRows[row].length; col++)
+                                for (
+                                  var col = 0;
+                                  col < keyboardRows[row].length;
+                                  col++
+                                )
                                   _KeyTile(
                                     keyData: keys.firstWhere(
-                                      (item) => item.key == keyboardRows[row][col],
+                                      (item) =>
+                                          item.key == keyboardRows[row][col],
                                     ),
-                                    highlighted: _highlight ==
-                                        keys.indexWhere((item) =>
-                                            item.key == keyboardRows[row][col]),
+                                    highlighted:
+                                        _highlight ==
+                                        keys.indexWhere(
+                                          (item) =>
+                                              item.key ==
+                                              keyboardRows[row][col],
+                                        ),
                                     showSimpleCode: settings.showSimpleCodes,
                                     showRootTable: settings.showRootTable,
                                   ),
@@ -208,11 +221,13 @@ class _OverlayScreenState extends State<OverlayScreen> {
                         ),
                       ),
                       const SizedBox(width: 5),
-                      Text('置顶',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: .42),
-                            fontSize: 10,
-                          )),
+                      Text(
+                        '置顶',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: .42),
+                          fontSize: 10,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -232,17 +247,15 @@ class _OverlayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextButton(
-        onPressed: onTap,
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.white.withValues(alpha: .78),
-          backgroundColor: Colors.white.withValues(alpha: .08),
-          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7),
-          ),
-        ),
-        child: Text(label, style: const TextStyle(fontSize: 12)),
-      );
+    onPressed: onTap,
+    style: TextButton.styleFrom(
+      foregroundColor: Colors.white.withValues(alpha: .78),
+      backgroundColor: Colors.white.withValues(alpha: .08),
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 7),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+    ),
+    child: Text(label, style: const TextStyle(fontSize: 12)),
+  );
 }
 
 class _KeyTile extends StatelessWidget {
@@ -278,7 +291,9 @@ class _KeyTile extends StatelessWidget {
             height: 3,
             decoration: BoxDecoration(
               color: accent,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(10),
+              ),
             ),
           ),
           Expanded(
@@ -289,46 +304,56 @@ class _KeyTile extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text(keyData.key,
-                          style: TextStyle(
-                            color: accent,
-                            fontFamily: 'monospace',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                          )),
+                      Text(
+                        keyData.key,
+                        style: TextStyle(
+                          color: accent,
+                          fontFamily: 'monospace',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                       const Spacer(),
-                      Text(_zoneName(keyData.key),
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: .40),
-                            fontSize: 8.5,
-                          )),
+                      Text(
+                        _zoneName(keyData.key),
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: .40),
+                          fontSize: 8.5,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(keyData.keyName,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 21,
-                            fontWeight: FontWeight.w600,
-                          )),
+                      Text(
+                        keyData.keyName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       const Spacer(),
                       if (showSimpleCode && keyData.simpleCode.isNotEmpty)
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 2),
+                            horizontal: 5,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: .09),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: Text(keyData.simpleCode,
-                              style: TextStyle(
-                                color: accent,
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w600,
-                              )),
+                          child: Text(
+                            keyData.simpleCode,
+                            style: TextStyle(
+                              color: accent,
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                     ],
                   ),

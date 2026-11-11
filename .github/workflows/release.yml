@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version number (for example 2.0.1)
+        description: Version number (for example 2.0.2)
         required: true
-        default: "2.0.1"
+        default: "2.0.2"
 
 permissions:
   contents: write
@@ -102,13 +102,13 @@ jobs:
           fi
           tag="v$version"
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" release-assets/*/* --clobber
+            gh release upload "$tag" release-assets/* --clobber
           else
             gh release create "$tag" \
               --draft \
               --title "肌忆五笔 v$version" \
               --generate-notes \
               --target "${{ github.sha }}"
-            gh release upload "$tag" release-assets/*/* --clobber
+            gh release upload "$tag" release-assets/* --clobber
           fi
           gh release edit "$tag" --draft=false

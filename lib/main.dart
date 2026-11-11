@@ -9,6 +9,7 @@ import 'app.dart';
 import 'core/practice_data.dart';
 import 'core/single_instance.dart';
 import 'core/storage.dart';
+import 'core/update_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,9 @@ Future<void> main() async {
   final settings = await storage.loadSettings();
   final catalog = await PracticeCatalog.load();
   final log = AppLogger(storage);
-  await log.info('PassiveWubi Flutter 2.0.1 starting.');
+  await log.info(
+    'PassiveWubi Flutter ${UpdateService.currentVersion} starting.',
+  );
 
   await windowManager.ensureInitialized();
 

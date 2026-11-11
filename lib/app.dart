@@ -57,8 +57,9 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     );
     runtime.addListener(_onRuntimeChanged);
     _tray = _TrayController(this);
-    _activationSubscription =
-        SingleInstance.activations.listen((_) => unawaited(showMain()));
+    _activationSubscription = SingleInstance.activations.listen(
+      (_) => unawaited(showMain()),
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) => _initializeDesktop());
   }
 
@@ -155,15 +156,15 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     await windowManager.setBackgroundColor(Colors.transparent);
     await windowManager.setOpacity(widget.settings.keyboardOpacity);
     await windowManager.setSize(
-      Size(1240 * widget.settings.keyboardScale,
-          520 * widget.settings.keyboardScale),
+      Size(
+        1240 * widget.settings.keyboardScale,
+        520 * widget.settings.keyboardScale,
+      ),
     );
-    if (widget.settings.keyboardLeft >= 0 &&
-        widget.settings.keyboardTop >= 0) {
-      await windowManager.setPosition(Offset(
-        widget.settings.keyboardLeft,
-        widget.settings.keyboardTop,
-      ));
+    if (widget.settings.keyboardLeft >= 0 && widget.settings.keyboardTop >= 0) {
+      await windowManager.setPosition(
+        Offset(widget.settings.keyboardLeft, widget.settings.keyboardTop),
+      );
     } else {
       await windowManager.setAlignment(Alignment.bottomCenter);
     }
@@ -239,10 +240,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
       themeMode: widget.settings.theme.themeMode,
       themeAnimationDuration: const Duration(milliseconds: 220),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      supportedLocales: const [
-        Locale('zh', 'CN'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('zh', 'CN'), Locale('en', 'US')],
       locale: const Locale('zh', 'CN'),
       theme: _theme(false),
       darkTheme: _theme(true),
@@ -270,8 +268,9 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
-      scaffoldBackgroundColor:
-          dark ? const Color(0xFF0B111B) : const Color(0xFFF2F4F8),
+      scaffoldBackgroundColor: dark
+          ? const Color(0xFF0B111B)
+          : const Color(0xFFF2F4F8),
       fontFamily: 'Noto Sans CJK SC',
       cardTheme: CardThemeData(
         color: dark ? const Color(0xFF172233) : Colors.white,

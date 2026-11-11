@@ -32,7 +32,7 @@ class _MainShellState extends State<MainShell> {
   MainSection _section = MainSection.settings;
   bool _startupEnabled = false;
   bool _checkingUpdate = false;
-  String _updateStatus = '当前版本 v2.0.1';
+  String _updateStatus = '当前版本 v${UpdateService.currentVersion}';
 
   AppRuntime get runtime => widget.runtime;
 
@@ -77,7 +77,9 @@ class _MainShellState extends State<MainShell> {
                           Text(
                             'PassiveWubi',
                             style: TextStyle(
-                              color: theme.colorScheme.onSurface.withValues(alpha: .52),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: .52,
+                              ),
                               fontSize: 12,
                             ),
                           ),
@@ -124,22 +126,31 @@ class _MainShellState extends State<MainShell> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('后台常驻',
-                            style: theme.textTheme.labelLarge
-                                ?.copyWith(fontWeight: FontWeight.w600)),
+                        Text(
+                          '后台常驻',
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         const SizedBox(height: 5),
                         Text(
                           '关闭主界面后，程序仍在托盘运行。',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface.withValues(alpha: .58),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: .58,
+                            ),
                             height: 1.45,
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text('v2.0.1 · Flutter',
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurface.withValues(alpha: .48),
-                            )),
+                        Text(
+                          'v${UpdateService.currentVersion} · Flutter',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: .48,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -224,7 +235,8 @@ class _MainShellState extends State<MainShell> {
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.white,
                               side: BorderSide(
-                                  color: Colors.white.withValues(alpha: .3)),
+                                color: Colors.white.withValues(alpha: .3),
+                              ),
                             ),
                             child: const Text('刷新界面'),
                           ),
@@ -241,15 +253,19 @@ class _MainShellState extends State<MainShell> {
                     shape: BoxShape.circle,
                     color: Colors.white.withValues(alpha: .08),
                     border: Border.all(
-                        color: Colors.white.withValues(alpha: .14)),
+                      color: Colors.white.withValues(alpha: .14),
+                    ),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('当前版本',
-                          style: TextStyle(
-                              color: Colors.white.withValues(alpha: .54),
-                              fontSize: 11)),
+                      Text(
+                        '当前版本',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: .54),
+                          fontSize: 11,
+                        ),
+                      ),
                       const SizedBox(height: 5),
                       Text(
                         settings.edition.label,
@@ -266,9 +282,12 @@ class _MainShellState extends State<MainShell> {
             ),
           ),
           const SizedBox(height: 20),
-          Text('五笔版本',
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w700)),
+          Text(
+            '五笔版本',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           const SizedBox(height: 10),
           Wrap(
             spacing: 10,
@@ -289,14 +308,19 @@ class _MainShellState extends State<MainShell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('置顶键盘外观',
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    '置顶键盘外观',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 5),
-                  Text('键盘大字与字根小字会按比例显示，可在置顶模式拖动窗口。',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .58),
-                      )),
+                  Text(
+                    '键盘大字与字根小字会按比例显示，可在置顶模式拖动窗口。',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .58),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   _SliderRow(
                     label: '透明度',
@@ -304,7 +328,8 @@ class _MainShellState extends State<MainShell> {
                     min: .25,
                     max: 1,
                     valueLabel: '${(settings.keyboardOpacity * 100).round()}%',
-                    onChanged: (value) => runtime.update((s) => s.keyboardOpacity = value),
+                    onChanged: (value) =>
+                        runtime.update((s) => s.keyboardOpacity = value),
                   ),
                   const SizedBox(height: 10),
                   _SliderRow(
@@ -313,24 +338,28 @@ class _MainShellState extends State<MainShell> {
                     min: .60,
                     max: 1.45,
                     valueLabel: '${(settings.keyboardScale * 100).round()}%',
-                    onChanged: (value) => runtime.update((s) => s.keyboardScale = value),
+                    onChanged: (value) =>
+                        runtime.update((s) => s.keyboardScale = value),
                   ),
                   const SizedBox(height: 10),
                   SwitchListTile(
                     value: settings.showSimpleCodes,
-                    onChanged: (value) => runtime.update((s) => s.showSimpleCodes = value),
+                    onChanged: (value) =>
+                        runtime.update((s) => s.showSimpleCodes = value),
                     title: const Text('显示一级简码'),
                     contentPadding: EdgeInsets.zero,
                   ),
                   SwitchListTile(
                     value: settings.showRootTable,
-                    onChanged: (value) => runtime.update((s) => s.showRootTable = value),
+                    onChanged: (value) =>
+                        runtime.update((s) => s.showRootTable = value),
                     title: const Text('显示字根表'),
                     contentPadding: EdgeInsets.zero,
                   ),
                   SwitchListTile(
                     value: settings.passiveHighlight,
-                    onChanged: (value) => runtime.update((s) => s.passiveHighlight = value),
+                    onChanged: (value) =>
+                        runtime.update((s) => s.passiveHighlight = value),
                     title: const Text('每 5 秒轻提示一个键位（潜移默化模式）'),
                     contentPadding: EdgeInsets.zero,
                   ),
@@ -345,9 +374,12 @@ class _MainShellState extends State<MainShell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('启动与更新',
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    '启动与更新',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   SwitchListTile(
                     value: settings.showKeyboardOnStartup,
                     onChanged: (value) =>
@@ -374,7 +406,9 @@ class _MainShellState extends State<MainShell> {
                           ? 'Linux：~/.config/autostart/passivewubi.desktop'
                           : '使用当前用户启动项',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .52),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: .52,
+                        ),
                       ),
                     ),
                     contentPadding: EdgeInsets.zero,
@@ -396,10 +430,7 @@ class _MainShellState extends State<MainShell> {
                 onPressed: runtime.log.openFolder,
                 child: const Text('打开日志目录'),
               ),
-              TextButton(
-                onPressed: widget.onExit,
-                child: const Text('完全退出'),
-              ),
+              TextButton(onPressed: widget.onExit, child: const Text('完全退出')),
             ],
           ),
         ],
@@ -425,16 +456,22 @@ class _MainShellState extends State<MainShell> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('肌忆五笔',
-                            style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w700)),
+                        Text(
+                          '肌忆五笔',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                         SizedBox(height: 4),
-                        Text('PassiveWubi · Flutter / Dart',
-                            style: TextStyle(fontSize: 13)),
+                        Text(
+                          'PassiveWubi · Flutter / Dart',
+                          style: TextStyle(fontSize: 13),
+                        ),
                       ],
                     ),
                   ),
-                  Chip(label: const Text('v2.0.1')),
+                  Chip(label: Text('v${UpdateService.currentVersion}')),
                 ],
               ),
             ),
@@ -456,7 +493,9 @@ class _MainShellState extends State<MainShell> {
                     child: Text(
                       '通过 GitHub 获取源码、反馈问题和检查更新。',
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .62),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: .62,
+                        ),
                       ),
                     ),
                   ),
@@ -488,14 +527,19 @@ class _MainShellState extends State<MainShell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('软件更新',
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    '软件更新',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  Text(_updateStatus,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .62),
-                      )),
+                  Text(
+                    _updateStatus,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .62),
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
@@ -506,7 +550,9 @@ class _MainShellState extends State<MainShell> {
                       ),
                       OutlinedButton(
                         onPressed: () => launchUrl(
-                          Uri.parse('https://github.com/CY68GI/PassiveWubi/releases/latest'),
+                          Uri.parse(
+                            'https://github.com/CY68GI/PassiveWubi/releases/latest',
+                          ),
                           mode: LaunchMode.externalApplication,
                         ),
                         child: const Text('打开发布页'),
@@ -534,20 +580,24 @@ class _MainShellState extends State<MainShell> {
             children: [
               const Row(
                 children: [
-                  Chip(label: Text('v2.0.1')),
+                  Chip(label: Text('v${UpdateService.currentVersion}')),
                   SizedBox(width: 10),
-                  Text('Flutter / Dart 跨平台重构',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w700)),
+                  Text(
+                    'Flutter / Dart 迁移与发布修正',
+                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),
-              Text('2026-11-11',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withValues(alpha: .55),
-                  )),
+              Text(
+                '2026-11-11',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withValues(alpha: .55),
+                ),
+              ),
               const Divider(height: 28),
               const Text(
+                '• 修复 GitHub Release 附件路径，恢复 Windows 与 Ubuntu 发布包上传\n'
                 '• Windows WPF 与 Linux Avalonia 客户端合并为单一 Flutter 工程\n'
                 '• 使用 Dart 共享全部五笔字根、题库和答题判定\n'
                 '• 保留置顶键盘、深浅主题、托盘、日志、更新检查和开机启动\n'
@@ -570,8 +620,8 @@ class _MainShellState extends State<MainShell> {
       _checkingUpdate = false;
       _updateStatus = result.success
           ? result.hasUpdate
-              ? '发现新版本 ${result.latest}，当前版本 ${result.current}。'
-              : '当前已是最新版本 ${result.current}。'
+                ? '发现新版本 ${result.latest}，当前版本 ${result.current}。'
+                : '当前已是最新版本 ${result.current}。'
           : result.error ?? '更新检查失败。';
     });
   }
@@ -608,22 +658,29 @@ class _Header extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: theme.textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    title,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 5),
-                  Text(subtitle,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .58),
-                      )),
+                  Text(
+                    subtitle,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .58),
+                    ),
+                  ),
                 ],
               ),
             ),
             OutlinedButton.icon(
               onPressed: onThemeToggle,
-              icon: Icon(theme.brightness == Brightness.dark
-                  ? Icons.light_mode_outlined
-                  : Icons.dark_mode_outlined),
+              icon: Icon(
+                theme.brightness == Brightness.dark
+                    ? Icons.light_mode_outlined
+                    : Icons.dark_mode_outlined,
+              ),
               label: Text(theme.brightness == Brightness.dark ? '浅色' : '深色'),
             ),
             const SizedBox(width: 8),
@@ -669,11 +726,13 @@ class _NavItem extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             child: Row(
               children: [
-                Icon(icon,
-                    size: 19,
-                    color: selected
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.onSurface.withValues(alpha: .58)),
+                Icon(
+                  icon,
+                  size: 19,
+                  color: selected
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.onSurface.withValues(alpha: .58),
+                ),
                 const SizedBox(width: 12),
                 Text(
                   label,
@@ -699,20 +758,22 @@ class _LogoMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: const Color(0xFFE9654F),
-          borderRadius: BorderRadius.circular(size * .28),
-        ),
-        alignment: Alignment.center,
-        child: Text('五',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: size * .52,
-              fontWeight: FontWeight.w700,
-            )),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: const Color(0xFFE9654F),
+      borderRadius: BorderRadius.circular(size * .28),
+    ),
+    alignment: Alignment.center,
+    child: Text(
+      '五',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: size * .52,
+        fontWeight: FontWeight.w700,
+      ),
+    ),
+  );
 }
 
 class _SliderRow extends StatelessWidget {
@@ -734,24 +795,21 @@ class _SliderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          SizedBox(width: 90, child: Text(label)),
-          Expanded(
-            child: Slider(
-              value: value,
-              min: min,
-              max: max,
-              onChanged: onChanged,
-            ),
-          ),
-          SizedBox(
-            width: 54,
-            child: Text(valueLabel,
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.bodySmall),
-          ),
-        ],
-      );
+    children: [
+      SizedBox(width: 90, child: Text(label)),
+      Expanded(
+        child: Slider(value: value, min: min, max: max, onChanged: onChanged),
+      ),
+      SizedBox(
+        width: 54,
+        child: Text(
+          valueLabel,
+          textAlign: TextAlign.right,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ),
+    ],
+  );
 }
 
 class _InfoRow extends StatelessWidget {
@@ -761,23 +819,21 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 90,
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurface
-                          .withValues(alpha: .58),
-                    ),
-              ),
+    padding: const EdgeInsets.symmetric(vertical: 6),
+    child: Row(
+      children: [
+        SizedBox(
+          width: 90,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface
+                  .withValues(alpha: .58),
             ),
-            Expanded(child: Text(value)),
-          ],
+          ),
         ),
-      );
+        Expanded(child: Text(value)),
+      ],
+    ),
+  );
 }

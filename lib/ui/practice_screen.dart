@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../core/practice_data.dart';
@@ -80,19 +81,21 @@ class _PracticeScreenState extends State<PracticeScreen> {
     _highlightTimer?.cancel();
     final edition = runtime.editionData;
     final items = switch (_kind) {
-      PracticeKind.mnemonic => edition.mnemonics
-          .map((item) => PracticeItem(
-                prompt: item.text,
-                code: item.key.toLowerCase(),
-                category: '口诀 · ${item.key} 键',
-              )),
+      PracticeKind.mnemonic => edition.mnemonics.map(
+        (item) => PracticeItem(
+          prompt: item.text,
+          code: item.key.toLowerCase(),
+          category: '口诀 · ${item.key} 键',
+        ),
+      ),
       PracticeKind.root => edition.roots,
       PracticeKind.character => edition.characterItems(_characterExercise),
       PracticeKind.phrase => edition.phraseItems(_phraseExercise),
     };
     _session = PracticeSession(
       items,
-      shuffle: _kind == PracticeKind.phrase &&
+      shuffle:
+          _kind == PracticeKind.phrase &&
           _phraseExercise == PhraseExercise.mixedShuffled,
     );
     _highlight = -1;
@@ -135,7 +138,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
                 setState(() => _mode = selection.first),
           ),
           const SizedBox(height: 18),
-          if (_mode == PracticeMode.speed) _speedPage(context) else _keyPage(context),
+          if (_mode == PracticeMode.speed)
+            _speedPage(context)
+          else
+            _keyPage(context),
         ],
       ),
     );
@@ -151,14 +157,19 @@ class _PracticeScreenState extends State<PracticeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('速度测试',
-                    style: theme.textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.w700)),
+                Text(
+                  '速度测试',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 const SizedBox(height: 5),
-                Text('选择内置文章或自定义文字，设置 1–50 分钟后开始。',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: .58),
-                    )),
+                Text(
+                  '选择内置文章或自定义文字，设置 1–50 分钟后开始。',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurface.withValues(alpha: .58),
+                  ),
+                ),
                 const SizedBox(height: 18),
                 Row(
                   children: [
@@ -235,16 +246,21 @@ class _PracticeScreenState extends State<PracticeScreen> {
               children: [
                 Row(
                   children: [
-                    Text('测试文本',
-                        style: theme.textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w700)),
+                    Text(
+                      '测试文本',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     const Spacer(),
-                    Text(_formatTime(_remaining),
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        )),
+                    Text(
+                      _formatTime(_remaining),
+                      style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -253,8 +269,9 @@ class _PracticeScreenState extends State<PracticeScreen> {
                   constraints: const BoxConstraints(minHeight: 90),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest
-                        .withValues(alpha: .45),
+                    color: theme.colorScheme.surfaceContainerHighest.withValues(
+                      alpha: .45,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
@@ -305,9 +322,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
             Row(
               children: [
                 Expanded(
-                  child: Text('${_kind.label}  ${_session?.position ?? 0} / ${_session?.total ?? 0}',
-                      style: theme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  child: Text(
+                    '${_kind.label}  ${_session?.position ?? 0} / ${_session?.total ?? 0}',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
                 Text(
                   '正确率 ${_session?.accuracy.toStringAsFixed(0) ?? '0'}%',
@@ -349,7 +369,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
                       decoration: const InputDecoration(labelText: '拆字分类'),
                       items: [
                         for (final item in CharacterExercise.values)
-                          DropdownMenuItem(value: item, child: Text(item.label)),
+                          DropdownMenuItem(
+                            value: item,
+                            child: Text(item.label),
+                          ),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -369,7 +392,10 @@ class _PracticeScreenState extends State<PracticeScreen> {
                       decoration: const InputDecoration(labelText: '词组分类'),
                       items: [
                         for (final item in PhraseExercise.values)
-                          DropdownMenuItem(value: item, child: Text(item.label)),
+                          DropdownMenuItem(
+                            value: item,
+                            child: Text(item.label),
+                          ),
                       ],
                       onChanged: (value) {
                         if (value != null) {
@@ -401,10 +427,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
               ),
               child: Column(
                 children: [
-                  Text('题目',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .52),
-                      )),
+                  Text(
+                    '题目',
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .52),
+                    ),
+                  ),
                   const SizedBox(height: 10),
                   Text(
                     current?.prompt ?? '当前分类暂无题目',
@@ -416,10 +444,12 @@ class _PracticeScreenState extends State<PracticeScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(_hintText(),
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurface.withValues(alpha: .58),
-                      )),
+                  Text(
+                    _hintText(),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurface.withValues(alpha: .58),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -455,8 +485,9 @@ class _PracticeScreenState extends State<PracticeScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: .32),
+                color: theme.colorScheme.surfaceContainerHighest.withValues(
+                  alpha: .32,
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -551,11 +582,11 @@ class _PracticeScreenState extends State<PracticeScreen> {
   }
 
   String _hintText() => switch (_kind) {
-        PracticeKind.mnemonic => '判断题：这句口诀属于哪个键？输入键位字母。',
-        PracticeKind.root => '判断题：这个字根位于哪个键？输入键位字母。',
-        PracticeKind.phrase => '输入该词组的五笔编码。',
-        PracticeKind.character => '输入该字的五笔编码。',
-      };
+    PracticeKind.mnemonic => '判断题：这句口诀属于哪个键？输入键位字母。',
+    PracticeKind.root => '判断题：这个字根位于哪个键？输入键位字母。',
+    PracticeKind.phrase => '输入该词组的五笔编码。',
+    PracticeKind.character => '输入该字的五笔编码。',
+  };
 
   void _submitAnswer() {
     final answer = _answerInput.text.trim();

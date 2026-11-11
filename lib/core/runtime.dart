@@ -17,8 +17,7 @@ class AppRuntime extends ChangeNotifier {
   final AppLogger log;
   AppSettings settings;
 
-  EditionData get editionData =>
-      catalog.forEdition(settings.edition.name);
+  EditionData get editionData => catalog.forEdition(settings.edition.name);
 
   Future<void> save() => storage.saveSettings(settings);
 
