@@ -16,12 +16,14 @@ class MainShell extends StatefulWidget {
   const MainShell({
     super.key,
     required this.runtime,
-    required this.onShowOverlay,
+    required this.overlayVisible,
+    required this.onToggleOverlay,
     required this.onExit,
   });
 
   final AppRuntime runtime;
-  final Future<void> Function() onShowOverlay;
+  final bool overlayVisible;
+  final Future<void> Function() onToggleOverlay;
   final Future<void> Function() onExit;
 
   @override
@@ -163,8 +165,9 @@ class _MainShellState extends State<MainShell> {
               children: [
                 _Header(
                   section: _section,
+                  overlayVisible: widget.overlayVisible,
                   onThemeToggle: runtime.toggleTheme,
-                  onShowOverlay: widget.onShowOverlay,
+                  onToggleOverlay: widget.onToggleOverlay,
                 ),
                 Expanded(
                   child: switch (_section) {
@@ -227,8 +230,10 @@ class _MainShellState extends State<MainShell> {
                         spacing: 10,
                         children: [
                           FilledButton(
-                            onPressed: widget.onShowOverlay,
-                            child: const Text('显示置顶键盘'),
+                            onPressed: widget.onToggleOverlay,
+                            child: Text(
+                              widget.overlayVisible ? '隐藏置顶键盘' : '显示置顶键盘',
+                            ),
                           ),
                           OutlinedButton(
                             onPressed: () => setState(() {}),
@@ -486,6 +491,7 @@ class _MainShellState extends State<MainShell> {
                   _InfoRow('英文名称', 'PassiveWubi'),
                   _InfoRow('技术栈', 'Flutter / Dart'),
                   _InfoRow('平台', 'Windows 10/11 · Ubuntu Linux'),
+                  _InfoRow('程序数据', '设置与日志均保存在程序目录'),
                   _InfoRow('开源许可', 'MIT License'),
                   const Divider(height: 28),
                   Align(
@@ -515,6 +521,35 @@ class _MainShellState extends State<MainShell> {
                         child: const Text('打开今日日志'),
                       ),
                     ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '特别致谢',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    '感谢王永民先生发明五笔字型输入法，为中文输入和本项目的'
+                    '字根学习体系奠定基础。',
+                    style: TextStyle(height: 1.65),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '感谢 DeepSeek V4 Flash 人工智能与 ChatGPT Codex 工具在'
+                    '代码实现、测试和发布过程中的协助。',
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.65),
                   ),
                 ],
               ),
@@ -583,7 +618,7 @@ class _MainShellState extends State<MainShell> {
                   Chip(label: Text('v${UpdateService.currentVersion}')),
                   SizedBox(width: 10),
                   Text(
-                    'Flutter / Dart 迁移与发布修正',
+                    '双窗口、图标与桌面体验更新',
                     style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700),
                   ),
                 ],
@@ -597,6 +632,11 @@ class _MainShellState extends State<MainShell> {
               ),
               const Divider(height: 28),
               const Text(
+                '• 主界面与置顶键盘改为独立窗口，可同时显示并由主界面控制显隐\n'
+                '• 重绘所有图标为橙色圆角矩形和白色“五”，移除悬浮键盘透明阴影\n'
+                '• 修复 Ubuntu 界面闪烁，设置和日志统一保存到程序目录\n'
+                '• 正式构建与 GitHub Release 仅在 Windows 上执行\n'
+                '• 增加对王永民先生、DeepSeek V4 Flash 和 ChatGPT Codex 的致谢\n'
                 '• 修复无仓库上下文时 GitHub Release 无法创建和上传附件的问题\n'
                 '• 修复 GitHub Release 附件路径，恢复 Windows 与 Ubuntu 发布包上传\n'
                 '• Windows WPF 与 Linux Avalonia 客户端合并为单一 Flutter 工程\n'
@@ -631,13 +671,15 @@ class _MainShellState extends State<MainShell> {
 class _Header extends StatelessWidget {
   const _Header({
     required this.section,
+    required this.overlayVisible,
     required this.onThemeToggle,
-    required this.onShowOverlay,
+    required this.onToggleOverlay,
   });
 
   final MainSection section;
+  final bool overlayVisible;
   final Future<void> Function() onThemeToggle;
-  final Future<void> Function() onShowOverlay;
+  final Future<void> Function() onToggleOverlay;
 
   @override
   Widget build(BuildContext context) {
@@ -686,9 +728,13 @@ class _Header extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             FilledButton.icon(
-              onPressed: onShowOverlay,
-              icon: const Icon(Icons.keyboard_alt_outlined),
-              label: const Text('置顶键盘'),
+              onPressed: onToggleOverlay,
+              icon: Icon(
+                overlayVisible
+                    ? Icons.keyboard_hide_outlined
+                    : Icons.keyboard_alt_outlined,
+              ),
+              label: Text(overlayVisible ? '隐藏键盘' : '显示键盘'),
             ),
           ],
         ),
@@ -762,7 +808,7 @@ class _LogoMark extends StatelessWidget {
     width: size,
     height: size,
     decoration: BoxDecoration(
-      color: const Color(0xFFE9654F),
+      color: const Color(0xFFF57C1F),
       borderRadius: BorderRadius.circular(size * .28),
     ),
     alignment: Alignment.center,

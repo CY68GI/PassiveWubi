@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:window_manager/legacy.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../core/keyboard_data.dart';
 import '../core/runtime.dart';
@@ -64,174 +64,178 @@ class _OverlayScreenState extends State<OverlayScreen> {
     final settings = runtime.settings;
     return Material(
       color: Colors.transparent,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: SizedBox(
-          width: 1240,
-          height: 520,
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
-            decoration: BoxDecoration(
-              color: const Color(0xF2131B2A),
-              borderRadius: BorderRadius.circular(17),
-              border: Border.all(color: Colors.white.withValues(alpha: .16)),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x66000000),
-                  blurRadius: 24,
-                  offset: Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onPanStart: (_) => windowManager.startDragging(),
-                  child: SizedBox(
-                    height: 52,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE9654F),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            '五',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 19,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Text(
-                          '肌忆五笔',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 9,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: .10),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            settings.edition.label,
-                            style: const TextStyle(
-                              color: Color(0xFFF2B6AA),
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '横 竖 撇 捺 折 · 字根表',
-                          style: TextStyle(
-                            color: Colors.white.withValues(alpha: .48),
-                            fontSize: 11,
-                          ),
-                        ),
-                        const Spacer(),
-                        _OverlayButton(label: '设置', onTap: widget.onOpenMain),
-                        const SizedBox(width: 8),
-                        _OverlayButton(label: '隐藏', onTap: widget.onHide),
-                      ],
-                    ),
+      child: Opacity(
+        opacity: settings.keyboardOpacity,
+        child: RepaintBoundary(
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: SizedBox(
+              width: 1240,
+              height: 520,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF131B2A),
+                  borderRadius: BorderRadius.circular(17),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: .16),
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (var row = 0; row < keyboardRows.length; row++)
-                        Expanded(
-                          child: Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                for (
-                                  var col = 0;
-                                  col < keyboardRows[row].length;
-                                  col++
-                                )
-                                  _KeyTile(
-                                    keyData: keys.firstWhere(
-                                      (item) =>
-                                          item.key == keyboardRows[row][col],
-                                    ),
-                                    highlighted:
-                                        _highlight ==
-                                        keys.indexWhere(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onPanStart: (_) => windowManager.startDragging(),
+                      child: SizedBox(
+                        height: 52,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF57C1F),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              alignment: Alignment.center,
+                              child: const Text(
+                                '五',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              '肌忆五笔',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 9,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: .10),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                settings.edition.label,
+                                style: const TextStyle(
+                                  color: Color(0xFFF2B6AA),
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Text(
+                              '横 竖 撇 捺 折 · 字根表',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: .48),
+                                fontSize: 11,
+                              ),
+                            ),
+                            const Spacer(),
+                            _OverlayButton(
+                              label: '设置',
+                              onTap: widget.onOpenMain,
+                            ),
+                            const SizedBox(width: 8),
+                            _OverlayButton(label: '隐藏', onTap: widget.onHide),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          for (var row = 0; row < keyboardRows.length; row++)
+                            Expanded(
+                              child: Center(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    for (
+                                      var col = 0;
+                                      col < keyboardRows[row].length;
+                                      col++
+                                    )
+                                      _KeyTile(
+                                        keyData: keys.firstWhere(
                                           (item) =>
                                               item.key ==
                                               keyboardRows[row][col],
                                         ),
-                                    showSimpleCode: settings.showSimpleCodes,
-                                    showRootTable: settings.showRootTable,
-                                  ),
-                              ],
+                                        highlighted:
+                                            _highlight ==
+                                            keys.indexWhere(
+                                              (item) =>
+                                                  item.key ==
+                                                  keyboardRows[row][col],
+                                            ),
+                                        showSimpleCode:
+                                            settings.showSimpleCodes,
+                                        showRootTable: settings.showRootTable,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child: Row(
+                        children: [
+                          Text(
+                            '拖动顶部移动 · 在设置中调整大小和透明度 · 关闭主界面不会退出',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: .38),
+                              fontSize: 10.5,
                             ),
                           ),
-                        ),
-                    ],
-                  ),
+                          const Spacer(),
+                          Text(
+                            settings.passiveHighlight
+                                ? '潜移默化模式 · 每 5 秒轻提示'
+                                : '静态字根模式',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: .42),
+                              fontSize: 10,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            width: 7,
+                            height: 7,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF6BC49A),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            '置顶',
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: .42),
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 30,
-                  child: Row(
-                    children: [
-                      Text(
-                        '拖动顶部移动 · 在设置中调整大小和透明度 · 关闭主界面不会退出',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: .38),
-                          fontSize: 10.5,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        settings.passiveHighlight
-                            ? '潜移默化模式 · 每 5 秒轻提示'
-                            : '静态字根模式',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: .42),
-                          fontSize: 10,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 7,
-                        height: 7,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF6BC49A),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        '置顶',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: .42),
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

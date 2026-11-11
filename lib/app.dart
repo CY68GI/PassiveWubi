@@ -5,10 +5,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tray_manager/legacy.dart';
-import 'package:window_manager/legacy.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'core/app_settings.dart';
 import 'core/practice_data.dart';
@@ -16,8 +18,8 @@ import 'core/runtime.dart';
 import 'core/single_instance.dart';
 import 'core/storage.dart';
 import 'core/update_service.dart';
+import 'core/window_bridge.dart';
 import 'ui/main_shell.dart';
-import 'ui/overlay_screen.dart';
 
 class PassiveWubiApp extends StatefulWidget {
   const PassiveWubiApp({
@@ -41,7 +43,10 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     with WindowListener, TrayListener {
   late final AppRuntime runtime;
   late final _TrayController _tray;
-  bool _overlayMode = false;
+  WindowController? _overlayController;
+  Completer<void> _overlayReady = Completer<void>()..complete();
+  Timer? _settingsSyncDebounce;
+  bool _overlayVisible = false;
   bool _initialized = false;
   bool _exiting = false;
   StreamSubscription<void>? _activationSubscription;
@@ -57,6 +62,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     );
     runtime.addListener(_onRuntimeChanged);
     _tray = _TrayController(this);
+    unawaited(windowCommandsChannel.setMethodCallHandler(_handleWindowCommand));
     _activationSubscription = SingleInstance.activations.listen(
       (_) => unawaited(showMain()),
     );
@@ -67,8 +73,10 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
   void dispose() {
     runtime.removeListener(_onRuntimeChanged);
     _activationSubscription?.cancel();
+    _settingsSyncDebounce?.cancel();
     windowManager.removeListener(this);
     trayManager.removeListener(this);
+    unawaited(windowCommandsChannel.setMethodCallHandler(null));
     _tray.dispose();
     runtime.dispose();
     super.dispose();
@@ -79,13 +87,13 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
       await windowManager.setPreventClose(true);
       windowManager.addListener(this);
       await windowManager.waitUntilReadyToShow(
-        const WindowOptions(
-          size: Size(1120, 760),
-          minimumSize: Size(900, 640),
+        WindowOptions(
+          size: const Size(1120, 760),
+          minimumSize: const Size(900, 640),
           center: true,
           title: '肌忆五笔 PassiveWubi',
           titleBarStyle: TitleBarStyle.normal,
-          backgroundColor: Color(0xFF0B111B),
+          backgroundColor: _mainBackgroundColor,
         ),
         () async {
           await windowManager.show();
@@ -95,8 +103,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
       await _tray.initialize();
       await widget.log.info('Desktop window initialized.');
       _initialized = true;
-      if (widget.settings.hasCompletedFirstRun &&
-          widget.settings.showKeyboardOnStartup) {
+      if (widget.settings.showKeyboardOnStartup) {
         await _showOverlay();
       } else {
         setState(() {});
@@ -115,60 +122,123 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
   void _onRuntimeChanged() {
     if (!mounted) return;
     setState(() {});
-    if (_overlayMode) {
-      unawaited(_applyOverlayWindowSettings());
-    }
+    _settingsSyncDebounce?.cancel();
+    _settingsSyncDebounce = Timer(
+      const Duration(milliseconds: 60),
+      () => unawaited(_sendOverlaySettings()),
+    );
   }
 
-  Future<void> _applyOverlayWindowSettings() async {
-    if (!_initialized) return;
-    final scale = widget.settings.keyboardScale;
-    await windowManager.setSize(Size(1240 * scale, 520 * scale));
-    await windowManager.setOpacity(widget.settings.keyboardOpacity);
-  }
+  Color get _mainBackgroundColor =>
+      widget.settings.theme == AppThemePreference.dark
+      ? const Color(0xFF0B111B)
+      : const Color(0xFFF2F4F8);
 
   Future<void> showMain() async {
     if (_exiting) return;
-    setState(() => _overlayMode = false);
     if (!_initialized) return;
     await windowManager.setTitleBarStyle(TitleBarStyle.normal);
     await windowManager.setAlwaysOnTop(false);
     await windowManager.setSkipTaskbar(false);
     await windowManager.setOpacity(1);
-    await windowManager.setBackgroundColor(
-      widget.settings.theme == AppThemePreference.dark
-          ? const Color(0xFF0B111B)
-          : const Color(0xFFF2F4F8),
-    );
+    await windowManager.setBackgroundColor(_mainBackgroundColor);
     await windowManager.setSize(const Size(1120, 760));
     await windowManager.center();
     await windowManager.show();
     await windowManager.focus();
   }
 
-  Future<void> _showOverlay() async {
-    if (_exiting) return;
-    setState(() => _overlayMode = true);
-    if (!_initialized) return;
-    await windowManager.setAsFrameless();
-    await windowManager.setAlwaysOnTop(true);
-    await windowManager.setSkipTaskbar(true);
-    await windowManager.setBackgroundColor(Colors.transparent);
-    await windowManager.setOpacity(widget.settings.keyboardOpacity);
-    await windowManager.setSize(
-      Size(
-        1240 * widget.settings.keyboardScale,
-        520 * widget.settings.keyboardScale,
+  Future<WindowController> _ensureOverlayController() async {
+    final existing = _overlayController;
+    if (existing != null) return existing;
+
+    for (final controller in await WindowController.getAll()) {
+      if (windowKindFromArguments(controller.arguments) ==
+          AppWindowKind.keyboard) {
+        _overlayController = controller;
+        return controller;
+      }
+    }
+
+    _overlayReady = Completer<void>();
+    final controller = await WindowController.create(
+      const WindowConfiguration(
+        hiddenAtLaunch: true,
+        arguments: keyboardWindowArguments,
       ),
     );
-    if (widget.settings.keyboardLeft >= 0 && widget.settings.keyboardTop >= 0) {
-      await windowManager.setPosition(
-        Offset(widget.settings.keyboardLeft, widget.settings.keyboardTop),
-      );
-    } else {
-      await windowManager.setAlignment(Alignment.bottomCenter);
+    _overlayController = controller;
+    return controller;
+  }
+
+  Future<void> _showOverlay() async {
+    if (_exiting || !_initialized) return;
+    try {
+      final controller = await _ensureOverlayController();
+      await _overlayReady.future.timeout(const Duration(seconds: 12));
+      await _sendOverlaySettings();
+      await controller.show();
+      if (mounted) setState(() => _overlayVisible = true);
+      await widget.log.info('Keyboard window shown.');
+    } catch (error) {
+      await widget.log.error('Unable to show keyboard window.', error);
     }
-    await windowManager.show();
+  }
+
+  Future<void> _hideOverlay() async {
+    final controller = _overlayController;
+    if (controller != null) {
+      try {
+        await controller.hide();
+        await widget.log.info('Keyboard window hidden.');
+      } catch (error) {
+        await widget.log.error('Unable to hide keyboard window.', error);
+      }
+    }
+    if (mounted) setState(() => _overlayVisible = false);
+  }
+
+  Future<void> _toggleOverlay() async {
+    if (_overlayVisible) {
+      await _hideOverlay();
+    } else {
+      await _showOverlay();
+    }
+  }
+
+  Future<void> _sendOverlaySettings() async {
+    if (_overlayController == null) return;
+    try {
+      await windowSettingsChannel.invokeMethod(
+        'applySettings',
+        widget.settings.toJson(),
+      );
+    } catch (_) {
+      // The keyboard engine can still be starting; it loads settings itself.
+    }
+  }
+
+  Future<dynamic> _handleWindowCommand(MethodCall call) async {
+    switch (call.method) {
+      case 'overlayReady':
+        if (!_overlayReady.isCompleted) _overlayReady.complete();
+      case 'showMain':
+        await showMain();
+      case 'hideOverlay':
+        await _hideOverlay();
+      case 'overlayMoved':
+        final args = call.arguments;
+        if (args is Map) {
+          final left = args['left'];
+          final top = args['top'];
+          if (left is num && top is num) {
+            widget.settings.keyboardLeft = left.toDouble();
+            widget.settings.keyboardTop = top.toDouble();
+            await runtime.save();
+          }
+        }
+    }
+    return true;
   }
 
   Future<void> hideToTray() async {
@@ -180,6 +250,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
     _exiting = true;
     await runtime.save();
     await widget.log.info('Application exit requested.');
+    await _hideOverlay();
     await _tray.dispose();
     try {
       await windowManager.destroy();
@@ -194,19 +265,6 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
   }
 
   @override
-  void onWindowMoved() {
-    unawaited(_rememberOverlayPosition());
-  }
-
-  Future<void> _rememberOverlayPosition() async {
-    if (!_overlayMode || !_initialized) return;
-    final position = await windowManager.getPosition();
-    runtime.settings.keyboardLeft = position.dx;
-    runtime.settings.keyboardTop = position.dy;
-    await runtime.save();
-  }
-
-  @override
   void onTrayIconMouseUp() {
     unawaited(showMain());
   }
@@ -217,7 +275,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
       case 'show':
         unawaited(showMain());
       case 'keyboard':
-        unawaited(_overlayMode ? showMain() : _showOverlay());
+        unawaited(_toggleOverlay());
       case 'exit':
         unawaited(exitApplication());
     }
@@ -238,22 +296,18 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
       title: '肌忆五笔 PassiveWubi',
       debugShowCheckedModeBanner: false,
       themeMode: widget.settings.theme.themeMode,
-      themeAnimationDuration: const Duration(milliseconds: 220),
+      themeAnimationDuration: Platform.isLinux
+          ? Duration.zero
+          : const Duration(milliseconds: 180),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const [Locale('zh', 'CN'), Locale('en', 'US')],
       locale: const Locale('zh', 'CN'),
       theme: _theme(false),
       darkTheme: _theme(true),
-      builder: (context, child) => _overlayMode
-          ? OverlayScreen(
-              runtime: runtime,
-              onOpenMain: showMain,
-              onHide: hideToTray,
-            )
-          : (child ?? const SizedBox.shrink()),
       home: MainShell(
         runtime: runtime,
-        onShowOverlay: _showOverlay,
+        overlayVisible: _overlayVisible,
+        onToggleOverlay: _toggleOverlay,
         onExit: exitApplication,
       ),
     );
@@ -261,7 +315,7 @@ class _PassiveWubiAppState extends State<PassiveWubiApp>
 
   ThemeData _theme(bool dark) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFFE9654F),
+      seedColor: const Color(0xFFF57C1F),
       brightness: dark ? Brightness.dark : Brightness.light,
       surface: dark ? const Color(0xFF131B29) : Colors.white,
     );

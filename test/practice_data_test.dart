@@ -3,6 +3,7 @@ import 'package:passive_wubi/core/app_settings.dart';
 import 'package:passive_wubi/core/keyboard_data.dart';
 import 'package:passive_wubi/core/practice_data.dart';
 import 'package:passive_wubi/core/practice_session.dart';
+import 'package:passive_wubi/core/window_bridge.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -69,5 +70,14 @@ void main() {
     expect(result.correct, 4);
     expect(result.accuracy, 100);
     expect(result.cpm, 4);
+  });
+
+  test('desktop window role follows launch arguments', () {
+    expect(windowKindFromArguments(''), AppWindowKind.main);
+    expect(
+      windowKindFromArguments(keyboardWindowArguments),
+      AppWindowKind.keyboard,
+    );
+    expect(windowKindFromArguments('invalid-json'), AppWindowKind.main);
   });
 }

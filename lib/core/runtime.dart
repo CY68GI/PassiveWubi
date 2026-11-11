@@ -28,6 +28,12 @@ class AppRuntime extends ChangeNotifier {
     notifyListeners();
   }
 
+  void applyExternalSettings(AppSettings value) {
+    value.normalize();
+    settings = value;
+    notifyListeners();
+  }
+
   Future<void> setEdition(WubiEdition edition) async {
     settings.edition = edition;
     await save();

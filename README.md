@@ -1,11 +1,12 @@
 # 肌忆五笔 · PassiveWubi
 
-肌忆五笔是一个常驻桌面的五笔学习工具。它以 Flutter 构建，使用 Dart 编写，在 Windows 和 Ubuntu Linux 上提供同一套置顶字根键盘、五笔练习和设置体验。
+肌忆五笔是一个常驻桌面的五笔学习工具。它以 Flutter 构建，使用 Dart 编写，主界面和置顶字根键盘使用两个独立窗口，可以同时显示。
 
 ## 核心功能
 
 - 五笔 86 版、98 版和新世纪版。
-- 屏幕置顶的 26 键字根表键盘，显示键名、一级简码和实际字根。
+- 独立的屏幕置顶 26 键字根表键盘，显示键名、一级简码和实际字根。
+- 主界面不置顶；键盘窗口的显示和隐藏由主界面或托盘统一控制。
 - 透明度、整体缩放、拖拽定位、深浅主题。
 - 每 5 秒轻提示一个键位的潜移默化模式。
 - 主界面关闭后继续在系统托盘运行。
@@ -15,12 +16,12 @@
 - 词题库：二字、三字、四字、混合词组、混合乱序。
 - 练习题目跟随当前五笔版本变化。
 - 关于、更新日志、运行日志、GitHub 更新检查和开机启动。
-- 日志按日期保存在程序可写目录的 `logs` 文件夹；不可写时回退到 XDG/用户状态目录。
+- 设置、日志和其他运行数据只保存在程序目录；日志位于程序目录的 `logs` 文件夹。
 
 ## 平台
 
-- Windows 10 / 11 x64：Flutter Windows 桌面版。
-- Ubuntu 22.04 / 24.04 x64：Flutter Linux 桌面版和 `.deb` 包。
+- Windows 10 / 11 x64：正式构建、发布和支持平台。
+- Ubuntu 22.04 / 24.04 x64：用于开发、兼容性测试和本地 `.deb` 验证，不向 GitHub 提交 Linux 构建产物。
 - 其他 Linux 发行版暂未列入官方支持范围。
 
 ## 开发环境
@@ -36,17 +37,19 @@ flutter analyze
 Windows 构建：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.0.3
+powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.1.0
 ```
 
-Ubuntu/Linux 构建：
+Ubuntu/Linux 本地开发测试：
 
 ```bash
 flutter build linux --release
-bash packaging/linux/build_deb.sh 2.0.3
+bash packaging/linux/build_deb.sh 2.1.0
 ```
 
 Ubuntu 构建需要 GTK 3、X11、Xi、Clang、CMake、Ninja 和 pkg-config。项目 CI 使用 Ubuntu 24.04。
+
+GitHub Actions 只使用 Windows runner 生成并提交 Windows 发布包。Ubuntu runner 只运行分析和测试，不生成或上传发布构建。
 
 ## 目录
 
@@ -66,6 +69,12 @@ Flutter 编译产物位于 `build/`，发布产物位于 `dist/`，两者都不�
 ## 关于
 
 项目详细说明见 [ABOUT.md](ABOUT.md)，版本变化见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 致谢
+
+- 感谢王永民先生发明五笔字型输入法，为中文输入和本项目的字根学习体系奠定基础。
+- 感谢 DeepSeek V4 Flash 人工智能在代码实现和问题分析中的协助。
+- 感谢 ChatGPT Codex 工具在开发、测试和发布流程中的协助。
 
 ## 许可证
 

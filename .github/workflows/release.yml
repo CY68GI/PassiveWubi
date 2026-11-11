@@ -1,4 +1,4 @@
-name: Release Flutter clients
+name: Release PassiveWubi for Windows
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version number (for example 2.0.3)
+        description: Version number (for example 2.1.0)
         required: true
-        default: "2.0.3"
+        default: "2.1.0"
 
 permissions:
   contents: write
@@ -43,49 +43,10 @@ jobs:
           name: windows-flutter
           path: dist/PassiveWubi-Flutter-v*-win-x64.zip*
 
-  linux:
-    name: Ubuntu Flutter package
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.47.9"
-          channel: stable
-          cache: true
-      - name: Install Linux desktop dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libx11-dev libxi-dev liblzma-dev clang cmake ninja-build pkg-config xvfb dpkg-dev patchelf
-      - name: Resolve version
-        id: version
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "value=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Test and build deb
-        run: |
-          flutter pub get
-          flutter test
-          flutter build linux --release
-          bash packaging/linux/build_deb.sh "${{ steps.version.outputs.value }}"
-          cd dist
-          sha256sum PassiveWubi-Flutter-v*-linux-amd64.deb > PassiveWubi-Flutter-linux-amd64.sha256
-      - uses: actions/upload-artifact@v4
-        with:
-          name: linux-flutter
-          path: |
-            dist/PassiveWubi-Flutter-v*-linux-amd64.deb
-            dist/PassiveWubi-Flutter-linux-amd64.sha256
-
   release:
     name: Publish release
-    needs:
-      - windows
-      - linux
-    runs-on: ubuntu-24.04
+    needs: windows
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -93,24 +54,29 @@ jobs:
           path: release-assets
           merge-multiple: true
       - name: Publish GitHub Release
-        shell: bash
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
         run: |
-          version="${GITHUB_REF_NAME#v}"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            version="${{ inputs.version }}"
-          fi
-          tag="v$version"
-          if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" release-assets/* --clobber
-          else
-            gh release create "$tag" \
-              --draft \
-              --title "肌忆五笔 v$version" \
-              --generate-notes \
-              --target "${{ github.sha }}"
-            gh release upload "$tag" release-assets/* --clobber
-          fi
-          gh release edit "$tag" --draft=false
+          $version = if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+            "${{ inputs.version }}"
+          } else {
+            "$env:GITHUB_REF_NAME".TrimStart("v")
+          }
+          $tag = "v$version"
+          $assetPaths = @(
+            Get-ChildItem -LiteralPath release-assets -File |
+              ForEach-Object { $_.FullName }
+          )
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $assetPaths --clobber
+          } else {
+            gh release create $tag --draft --title "肌忆五笔 v$version" `
+              --generate-notes --target "$env:GITHUB_SHA"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            gh release upload $tag $assetPaths --clobber
+          }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          gh release edit $tag --draft=false
