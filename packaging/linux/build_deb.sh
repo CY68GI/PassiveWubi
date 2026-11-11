@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VERSION="${1:-2.1.3}"
+VERSION="${1:-2.1.4}"
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUNDLE="$ROOT/build/linux/x64/release/bundle"
 STAGE="$ROOT/dist/passivewubi-deb-$VERSION"

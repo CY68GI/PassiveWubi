@@ -37,14 +37,14 @@ flutter analyze
 Windows 构建：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.1.3
+powershell -ExecutionPolicy Bypass -File .\scripts\build_flutter_windows.ps1 -Version 2.1.4
 ```
 
 Ubuntu/Linux 构建：
 
 ```bash
 flutter build linux --release
-bash packaging/linux/build_deb.sh 2.1.3
+bash packaging/linux/build_deb.sh 2.1.4
 ```
 
 Ubuntu 构建需要 GTK 3、X11、Xi、Clang、CMake、Ninja 和 pkg-config。项目 CI 使用 Ubuntu 24.04。
