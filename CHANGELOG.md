@@ -1,5 +1,12 @@
 # 更新日志
 
+## v2.1.3 - 2026-11-11
+
+### Ubuntu 构建
+
+- Ubuntu 发布任务只补装 GTK/X11 所需的少量开发包，减少 GitHub Runner 依赖安装时间。
+- Windows ZIP 与 Ubuntu `.deb` 继续由双平台构建，并由 Windows 任务统一发布。
+
 ## v2.1.2 - 2026-11-11
 
 ### 发布稳定性

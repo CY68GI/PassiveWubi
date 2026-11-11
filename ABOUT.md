@@ -46,7 +46,7 @@ test/       Dart/Flutter 测试
 Ubuntu `.deb` 会作为 GitHub Release 附件发布：
 
 ```bash
-sudo dpkg -i PassiveWubi-Flutter-v2.1.2-linux-amd64.deb
+sudo dpkg -i PassiveWubi-Flutter-v2.1.3-linux-amd64.deb
 passivewubi
 ```
 
