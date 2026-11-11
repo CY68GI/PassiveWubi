@@ -1,18 +1,24 @@
-# Build products are kept outside the source tree.
-dist/
-.vs/
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
 .idea/
-*.user
-*.suo
-*.rsuser
+.vscode/
+*.iml
+
+# Local release and runtime output
+dist/
 *.log
 logs/
-
-# Local runtime settings
 settings.json
 settings.json.tmp
 
-# OS files
+# Native and OS files
+.vs/
+*.user
+*.suo
 Thumbs.db
 Desktop.ini
 .DS_Store
