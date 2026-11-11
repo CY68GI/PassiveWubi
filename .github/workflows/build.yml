@@ -45,4 +45,4 @@ jobs:
           flutter pub get
           flutter test
           flutter build linux --release
-          bash packaging/linux/build_deb.sh 2.0.2
+          bash packaging/linux/build_deb.sh 2.0.3

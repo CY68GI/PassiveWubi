@@ -597,6 +597,7 @@ class _MainShellState extends State<MainShell> {
               ),
               const Divider(height: 28),
               const Text(
+                '• 修复无仓库上下文时 GitHub Release 无法创建和上传附件的问题\n'
                 '• 修复 GitHub Release 附件路径，恢复 Windows 与 Ubuntu 发布包上传\n'
                 '• Windows WPF 与 Linux Avalonia 客户端合并为单一 Flutter 工程\n'
                 '• 使用 Dart 共享全部五笔字根、题库和答题判定\n'

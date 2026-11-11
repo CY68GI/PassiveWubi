@@ -41,7 +41,7 @@ test/       Dart/Flutter 测试
 ## Ubuntu 安装
 
 ```bash
-sudo dpkg -i PassiveWubi-Flutter-v2.0.2-linux-amd64.deb
+sudo dpkg -i PassiveWubi-Flutter-v2.0.3-linux-amd64.deb
 passivewubi
 ```
 

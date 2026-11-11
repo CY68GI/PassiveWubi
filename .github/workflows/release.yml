@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version number (for example 2.0.2)
+        description: Version number (for example 2.0.3)
         required: true
-        default: "2.0.2"
+        default: "2.0.3"
 
 permissions:
   contents: write
@@ -87,6 +87,7 @@ jobs:
       - linux
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: release-assets
@@ -95,6 +96,7 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
         run: |
           version="${GITHUB_REF_NAME#v}"
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
