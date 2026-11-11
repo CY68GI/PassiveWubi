@@ -1,5 +1,12 @@
 # 更新日志
 
+## v2.1.2 - 2026-11-11
+
+### 发布稳定性
+
+- Ubuntu 发布任务直接使用 GitHub Runner 预置的 APT 包索引，避免系统索引更新长时间阻塞。
+- 继续同时发布 Windows ZIP 与 Ubuntu `.deb`，由 Windows 发布任务统一上传。
+
 ## v2.1.1 - 2026-11-11
 
 ### Ubuntu 发布
